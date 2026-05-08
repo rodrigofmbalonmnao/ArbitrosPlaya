@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ArbitrosPlaya — Banco de Vídeos</title>
+  <link rel="stylesheet" href="../css/global.css"/>
+  <link rel="stylesheet" href="../css/videos.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-ready.js"></script>
+</head>
+<body style="background:#F5F5F5;min-height:100vh">
+<header class="app-header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-logos">
+        <img src="../assets/logo-cta.png" alt="CTA" class="header-logo-cta" onclick="window.location.href='../home.html'" style="cursor:pointer" />
+      </div>
+      <span class="header-title">Vídeos</span>
+    </div>
+    <div class="header-right">
+      <button class="btn-logout" onclick="window.location.href='test-videos-menu.html'" style="background:transparent;color:#757575;padding:8px">Volver</button>
+    </div>
+  </div>
+</header>
+<div class="banco-container">
+  <div class="contact-banner">
+    <span class="contact-banner-text">¿Tienes vídeos nuevos? Envíalos a: <span class="contact-banner-email">rodrigofmbalonmano@gmail.com</span></span>
+  </div>
+
+  <div class="banco-actions">
+    <button id="btnToggleAll" class="btn-toggle-all" onclick="toggleAllCategories()">Expandir todo</button>
+  </div>
+
+  <div id="categoriesList"></div>
+</div>
+
+<!-- Modal -->
+<div class="video-modal" id="videoModal">
+  <div class="video-modal-content">
+    <div class="video-modal-header">
+      <span class="video-modal-title" id="modalTitle">Vídeo</span>
+      <button class="video-modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="video-modal-player" id="modalPlayer"></div>
+  </div>
+</div>
+
+<script src="../js/data/questions-videos.js"></script>
+<script src="../js/videos.js"></script>
+</body>
+</html>

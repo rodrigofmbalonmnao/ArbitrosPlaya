@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ArbitrosPlaya — Login</title>
+  <meta name="description" content="Plataforma de formación para árbitros de balonmano playa. Accede a tests, reglamentos y vídeos oficiales IHF 2026." />
+  <link rel="stylesheet" href="css/global.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-ready.js"></script>
+</head>
+<body>
+<div class="auth-page">
+
+  <!-- Logo + Nombre -->
+  <div class="auth-logo-area">
+    <div class="auth-logos">
+      <img src="assets/logo-cta.png" alt="CTA Logo" class="auth-logo-img" />
+    </div>
+    <div class="auth-app-name">ArbitrosPlaya</div>
+    <div class="auth-tagline">Plataforma de Formación Arbitral · Balonmano Playa Federación Madrileña de Balonmano</div>
+  </div>
+
+  <!-- Auth Card -->
+  <div class="auth-card" id="authCard">
+
+    <!-- TABS -->
+    <div class="auth-tabs" id="authTabs">
+      <button class="auth-tab active" id="tabLogin" onclick="showTab('login')">Iniciar Sesión</button>
+      <button class="auth-tab" id="tabRegister" onclick="showTab('register')">Registrarse</button>
+    </div>
+
+    <!-- Error global -->
+    <div class="auth-error" id="authError"></div>
+
+    <!-- ===== FORM LOGIN ===== -->
+    <form class="auth-form active" id="formLogin" onsubmit="handleLogin(event)">
+      <div class="input-group">
+        <label for="loginEmail">Correo electrónico</label>
+        <input type="email" id="loginEmail" class="input-field" placeholder="tu@email.com" required autocomplete="email" />
+      </div>
+      <div class="input-group">
+        <label for="loginPassword">Contraseña (solo números)</label>
+        <input type="password" id="loginPassword" class="input-field" placeholder="••••••" inputmode="numeric" pattern="[0-9]*" required autocomplete="current-password" />
+      </div>
+      <button type="submit" class="btn-auth-submit" id="btnLogin">Iniciar Sesión</button>
+      <div class="auth-divider">o</div>
+      <button type="button" class="btn-google" onclick="handleGoogleLogin()">
+        <svg class="google-icon" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.5 29.3 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.5 7.1 29 5 24 5 13 5 4 14 4 24s9 19 20 19c11 0 19-8 19-19 0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.5 7.1 29 5 24 5 16.3 5 9.7 9 6.3 14.7z"/><path fill="#4CAF50" d="M24 43c5 0 9.5-1.9 12.9-5l-5.9-5C29.3 34.5 26.8 35 24 35c-5.3 0-9.7-3.5-11.3-8.2L6 31.7C9.4 38.5 16.2 43 24 43z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.3 5.5l5.9 5c-.4.4 6.1-4.5 6.1-14.5 0-1.3-.1-2.6-.4-3.9z"/></svg>
+        Continuar con Google
+      </button>
+    </form>
+
+    <!-- ===== FORM REGISTRO ===== -->
+    <form class="auth-form" id="formRegister" onsubmit="handleRegister(event)">
+      <div class="form-row">
+        <div class="input-group">
+          <label for="regNombre">Nombre</label>
+          <input type="text" id="regNombre" class="input-field" placeholder="Juan" required />
+        </div>
+        <div class="input-group">
+          <label for="regApellido">Apellido</label>
+          <input type="text" id="regApellido" class="input-field" placeholder="García" required />
+        </div>
+      </div>
+      <div class="input-group">
+        <label for="regEmail">Correo electrónico</label>
+        <input type="email" id="regEmail" class="input-field" placeholder="tu@email.com" required autocomplete="email" />
+      </div>
+      <div class="input-group">
+        <label for="regFederacion">Federación de Balonmano</label>
+        <select id="regFederacion" class="select-field" required>
+          <option value="" disabled selected>Selecciona tu federación...</option>
+          <option>Real Federación Española de Balonmano (RFEBM)</option>
+          <option>Federación Andaluza de Balonmano</option>
+          <option>Federación Aragonesa de Balonmano</option>
+          <option>Federación Asturiana de Balonmano</option>
+          <option>Federación Balear de Balonmano</option>
+          <option>Federación Canaria de Balonmano</option>
+          <option>Federación Cántabra de Balonmano</option>
+          <option>Federación de Balonmano de Castilla y León</option>
+          <option>Federación de Balonmano de Castilla-La Mancha</option>
+          <option>Federación Catalana de Balonmano</option>
+          <option>Federación de Balonmano de Ceuta</option>
+          <option>Federación Extremeña de Balonmano</option>
+          <option>Federación Gallega de Balonmano</option>
+          <option>Federación Madrileña de Balonmano</option>
+          <option>Federación de Balonmano de Melilla</option>
+          <option>Federación de Balonmano de la Región de Murcia</option>
+          <option>Federación Navarra de Balonmano</option>
+          <option>Federación Vasca de Balonmano (EHF)</option>
+          <option>Federación Riojana de Balonmano</option>
+          <option>Federación Valenciana de Balonmano</option>
+          <option>Otra...</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label for="regPassword">Contraseña (solo números)</label>
+        <input type="password" id="regPassword" class="input-field" placeholder="Mínimo 6 dígitos" inputmode="numeric" pattern="[0-9]*" minlength="6" required />
+        <span class="password-hint">Solo números · mínimo 6 dígitos</span>
+      </div>
+      <div class="input-group">
+        <label for="regPasswordConfirm">Confirmar contraseña</label>
+        <input type="password" id="regPasswordConfirm" class="input-field" placeholder="Repite la contraseña" inputmode="numeric" pattern="[0-9]*" required />
+      </div>
+      <button type="submit" class="btn-auth-submit" id="btnRegister">Registrarse</button>
+      <div class="auth-divider">o</div>
+      <button type="button" class="btn-google" onclick="handleGoogleRegister()">
+        <svg class="google-icon" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.5 29.3 35 24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.5 7.1 29 5 24 5 13 5 4 14 4 24s9 19 20 19c11 0 19-8 19-19 0-1.3-.1-2.6-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c2.8 0 5.3 1 7.2 2.7l5.7-5.7C33.5 7.1 29 5 24 5 16.3 5 9.7 9 6.3 14.7z"/><path fill="#4CAF50" d="M24 43c5 0 9.5-1.9 12.9-5l-5.9-5C29.3 34.5 26.8 35 24 35c-5.3 0-9.7-3.5-11.3-8.2L6 31.7C9.4 38.5 16.2 43 24 43z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.2-4.3 5.5l5.9 5c-.4.4 6.1-4.5 6.1-14.5 0-1.3-.1-2.6-.4-3.9z"/></svg>
+        Registrarse con Google
+      </button>
+    </form>
+
+    <!-- ===== VERIFICACIÓN EMAIL ===== -->
+    <div class="verify-screen" id="verifyScreen">
+      <div class="verify-icon">✉️</div>
+      <div class="verify-title">Verifica tu email</div>
+      <div class="verify-subtitle">
+        Hemos enviado un código de verificación a<br/>
+        <span class="verify-email-display" id="verifyEmailDisplay"></span>
+      </div>
+      <div class="auth-error" id="verifyError"></div>
+      <div class="code-input-container" id="codeInputs">
+        <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+        <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+        <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+        <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+        <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+        <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+      </div>
+      <button class="btn-auth-submit" onclick="handleVerify()">Verificar código</button>
+      <button class="resend-link" id="resendBtn" onclick="handleResend()">¿No lo recibiste? Reenviar código</button>
+      <!-- DEMO hint -->
+      <div style="background:#FEF0F2;border-radius:8px;padding:10px 16px;font-size:0.8rem;color:#C8102E;text-align:center;">
+        🔧 <strong>Demo:</strong> El código de verificación es <strong>123456</strong>
+      </div>
+    </div>
+
+    <!-- ===== GOOGLE EXTRA (completar perfil) ===== -->
+    <div class="google-extra-screen" id="googleExtraScreen">
+      <h2 style="text-align:center;font-size:1.3rem;font-weight:700;">Completa tu perfil</h2>
+      <p class="subtitle">Solo necesitamos un par de datos más</p>
+      <div class="auth-error" id="googleError"></div>
+      <div class="form-row">
+        <div class="input-group">
+          <label for="gNombre">Nombre</label>
+          <input type="text" id="gNombre" class="input-field" placeholder="Juan" required />
+        </div>
+        <div class="input-group">
+          <label for="gApellido">Apellido</label>
+          <input type="text" id="gApellido" class="input-field" placeholder="García" required />
+        </div>
+      </div>
+      <div class="input-group">
+        <label for="gFederacion">Federación de Balonmano</label>
+        <select id="gFederacion" class="select-field" required>
+          <option value="" disabled selected>Selecciona tu federación...</option>
+          <option>Real Federación Española de Balonmano (RFEBM)</option>
+          <option>Federación Andaluza de Balonmano</option>
+          <option>Federación Aragonesa de Balonmano</option>
+          <option>Federación Asturiana de Balonmano</option>
+          <option>Federación Balear de Balonmano</option>
+          <option>Federación Canaria de Balonmano</option>
+          <option>Federación Cántabra de Balonmano</option>
+          <option>Federación de Balonmano de Castilla y León</option>
+          <option>Federación de Balonmano de Castilla-La Mancha</option>
+          <option>Federación Catalana de Balonmano</option>
+          <option>Federación de Balonmano de Ceuta</option>
+          <option>Federación Extremeña de Balonmano</option>
+          <option>Federación Gallega de Balonmano</option>
+          <option>Federación Madrileña de Balonmano</option>
+          <option>Federación de Balonmano de Melilla</option>
+          <option>Federación de Balonmano de la Región de Murcia</option>
+          <option>Federación Navarra de Balonmano</option>
+          <option>Federación Vasca de Balonmano (EHF)</option>
+          <option>Federación Riojana de Balonmano</option>
+          <option>Federación Valenciana de Balonmano</option>
+          <option>Otra...</option>
+        </select>
+      </div>
+      <button class="btn-auth-submit" onclick="handleGoogleComplete()">Guardar y continuar</button>
+    </div>
+
+  </div><!-- /auth-card -->
+</div><!-- /auth-page -->
+
+<script src="js/auth.js"></script>
+</body>
+</html>

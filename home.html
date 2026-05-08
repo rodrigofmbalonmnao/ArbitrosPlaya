@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ArbitrosPlaya — Dashboard</title>
+  <meta name="description" content="Panel principal de ArbitrosPlaya. Accede a tests de reglas, vídeos, reglamentos y tu historial."/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/home.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-ready.js"></script>
+</head>
+<body class="home-page">
+
+<!-- Header -->
+<header class="app-header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <span class="header-title">ArbitrosPlaya</span>
+    </div>
+    <div class="header-right">
+      <span class="header-user" id="headerUser"></span>
+      <button class="btn-logout" onclick="handleLogout()">Cerrar sesión</button>
+    </div>
+  </div>
+</header>
+
+<!-- Welcome -->
+<section class="home-welcome">
+  <div class="welcome-container">
+    <img src="assets/logo-cta.png" alt="CTA Logo" class="welcome-logo" />
+    <div class="welcome-content">
+      <div class="welcome-greeting">Bienvenido, <span id="welcomeName"></span> 👋</div>
+      <div class="welcome-subtitle">Plataforma de Formación Arbitral · Balonmano Playa Federación Madrileña de Balonmano</div>
+    </div>
+  </div>
+</section>
+
+<!-- Dashboard Cards -->
+<section class="dashboard-section">
+  <div class="dashboard-title">¿Qué quieres hacer hoy?</div>
+  <div class="dashboard-grid">
+
+    <a href="pages/test-reglas.html" class="dash-card" style="animation-delay:0.1s">
+      <div class="dash-card-icon"><span class="icon-emoji">📋</span></div>
+      <div class="dash-card-info">
+        <div class="dash-card-title">Test Reglas de Juego</div>
+        <div class="dash-card-desc">Pon a prueba tu conocimiento del reglamento IHF 2026</div>
+      </div>
+      <div class="dash-card-arrow">→</div>
+    </a>
+
+    <a href="pages/test-videos-menu.html" class="dash-card" style="animation-delay:0.2s">
+      <div class="dash-card-icon"><span class="icon-emoji">🎬</span></div>
+      <div class="dash-card-info">
+        <div class="dash-card-title">Vídeos</div>
+        <div class="dash-card-desc">Analiza situaciones reales y decide la sanción correcta</div>
+      </div>
+      <div class="dash-card-arrow">→</div>
+    </a>
+
+    <a href="pages/reglamentos.html" class="dash-card" style="animation-delay:0.3s">
+      <div class="dash-card-icon"><span class="icon-emoji">📖</span></div>
+      <div class="dash-card-info">
+        <div class="dash-card-title">Reglamentos</div>
+        <div class="dash-card-desc">Consulta y descarga los reglamentos oficiales</div>
+      </div>
+      <div class="dash-card-arrow">→</div>
+    </a>
+
+    <a href="pages/notas.html" class="dash-card" style="animation-delay:0.4s">
+      <div class="dash-card-icon"><span class="icon-emoji">📝</span></div>
+      <div class="dash-card-info">
+        <div class="dash-card-title">Notas Exámenes</div>
+        <div class="dash-card-desc">Revisa tu historial de tests y estadísticas</div>
+      </div>
+      <div class="dash-card-arrow">→</div>
+    </a>
+
+    <!-- Admin Card (hidden by default) -->
+    <a href="pages/admin.html" class="dash-card admin-card hidden" id="adminCard" style="animation-delay:0.5s">
+      <div class="dash-card-icon"><span class="icon-emoji">⚙️</span></div>
+      <div class="dash-card-info">
+        <div class="dash-card-title">Panel de Administración</div>
+        <div class="dash-card-desc">Gestiona usuarios, tests y estadísticas generales</div>
+      </div>
+      <div class="dash-card-arrow">→</div>
+    </a>
+
+  </div>
+</section>
+
+<footer class="home-footer">© 2026 ArbitrosPlaya · Balonmano Playa</footer>
+
+<script src="js/home.js"></script>
+</body>
+</html>

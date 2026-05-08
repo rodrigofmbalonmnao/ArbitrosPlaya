@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ArbitrosPlaya — Reglamentos</title>
+  <link rel="stylesheet" href="../css/global.css"/>
+  <link rel="stylesheet" href="../css/reglamentos.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-ready.js"></script>
+</head>
+<body style="background:#F5F5F5;min-height:100vh">
+<header class="app-header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-logos">
+        <div class="header-logo-container" onclick="window.location.href='../home.html'">
+          <div class="header-logo-row">
+            <img src="../assets/logo-cta.png" alt="CTA" />
+          </div>
+          <span class="header-logo-subtext">HOME</span>
+        </div>
+      </div>
+      <span class="header-title">Biblioteca</span>
+    </div>
+    <div class="header-right">
+      <span class="header-user" id="headerUser"></span>
+      <button class="btn-logout" onclick="window.location.href='../home.html'">Cerrar sesión</button>
+    </div>
+  </div>
+</header>
+<div class="reglamentos-container">
+  <div class="reglamentos-header">
+    <h1>📖 Biblioteca de Reglamentos</h1>
+    <p>Consulta y descarga los reglamentos oficiales de balonmano playa</p>
+  </div>
+  <div class="reglamentos-grid" id="reglamentosGrid"></div>
+</div>
+<script src="../js/reglamentos.js"></script>
+</body>
+</html>

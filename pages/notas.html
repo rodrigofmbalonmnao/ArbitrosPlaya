@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ArbitrosPlaya — Notas Exámenes</title>
+  <link rel="stylesheet" href="../css/global.css"/>
+  <link rel="stylesheet" href="../css/notas.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-ready.js"></script>
+</head>
+<body style="background:#F5F5F5;min-height:100vh">
+<header class="app-header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-logos">
+        <div class="header-logo-container" onclick="window.location.href='../home.html'">
+          <div class="header-logo-row">
+            <img src="../assets/logo-cta.png" alt="CTA" />
+          </div>
+          <span class="header-logo-subtext">HOME</span>
+        </div>
+      </div>
+      <span class="header-title">Notas</span>
+    </div>
+    <div class="header-right">
+      <span class="header-user" id="headerUser"></span>
+      <button class="btn-logout" onclick="window.location.href='../home.html'">Cerrar sesión</button>
+    </div>
+  </div>
+</header>
+<div class="notas-container">
+  <div class="notas-header">
+    <h1>📝 Historial de Exámenes</h1>
+    <p>Revisa tus tests realizados y tus estadísticas</p>
+  </div>
+  <!-- Filtros -->
+  <div class="filters-bar">
+    <select class="select-field" id="filterYear"><option value="">Todos los años</option></select>
+    <select class="select-field" id="filterMonth">
+      <option value="">Todos los meses</option>
+      <option value="1">Enero</option><option value="2">Febrero</option><option value="3">Marzo</option>
+      <option value="4">Abril</option><option value="5">Mayo</option><option value="6">Junio</option>
+      <option value="7">Julio</option><option value="8">Agosto</option><option value="9">Septiembre</option>
+      <option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option>
+    </select>
+    <select class="select-field" id="filterType">
+      <option value="">Todos los tests</option>
+      <option value="reglas">Test de Reglas</option>
+      <option value="video">Test de Vídeos</option>
+    </select>
+    <button class="btn btn-primary btn-sm" onclick="loadNotas()">🔍 Filtrar</button>
+  </div>
+  <!-- Stats -->
+  <div class="notas-stats">
+    <div class="nota-stat"><div class="nota-stat-value" id="statTotal">0</div><div class="nota-stat-label">Tests realizados</div></div>
+    <div class="nota-stat"><div class="nota-stat-value" id="statMedia">0%</div><div class="nota-stat-label">Media porcentaje</div></div>
+    <div class="nota-stat"><div class="nota-stat-value" id="statBest">0%</div><div class="nota-stat-label">Mejor nota</div></div>
+  </div>
+  <!-- Table -->
+  <div class="notas-table-container">
+    <table class="notas-table">
+      <thead><tr><th>Tipo</th><th>Test</th><th>Nota</th><th>Duración</th><th>Fecha</th></tr></thead>
+      <tbody id="notasBody"></tbody>
+    </table>
+  </div>
+  <div class="no-results hidden" id="noResults"><div class="icon">📋</div><p>No hay exámenes registrados.</p></div>
+</div>
+<script src="../js/notas.js"></script>
+</body>
+</html>

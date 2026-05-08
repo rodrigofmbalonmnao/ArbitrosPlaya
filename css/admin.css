@@ -1,0 +1,122 @@
+/* ============================================
+   ArbitrosPlaya - Admin Panel PRO Styles
+   ============================================ */
+
+.admin-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+    background: white;
+    padding: 8px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.admin-tab {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #757575;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.admin-tab.active {
+    background: #C8102E;
+    color: white;
+}
+
+.admin-section {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.admin-section.active {
+    display: block;
+}
+
+.table-header-title {
+    padding: 16px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #1A1A1A;
+    border-bottom: 1px solid #F0F0F0;
+}
+
+/* Modals */
+.admin-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-modal.active {
+    display: flex;
+}
+
+.admin-modal-content {
+    background: white;
+    width: 90%;
+    max-width: 800px;
+    max-height: 85vh;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s ease;
+}
+
+.admin-modal-header {
+    padding: 20px;
+    background: #F8F9FA;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #EEEEEE;
+}
+
+.admin-modal-body {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.close-modal {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #9E9E9E;
+}
+
+/* Content Editor */
+.content-editor-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.editor-container {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #EEEEEE;
+    min-height: 300px;
+}
+
+.q-edit-card {
+    padding: 16px;
+    border-bottom: 1px solid #F0F0F0;
+}
+
+.q-edit-card:last-child { border-bottom: none; }
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}

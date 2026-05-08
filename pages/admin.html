@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ArbitrosPlaya — Panel Administrador PRO</title>
+  <link rel="stylesheet" href="../css/global.css"/>
+  <link rel="stylesheet" href="../css/notas.css"/>
+  <link rel="stylesheet" href="../css/admin.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-ready.js"></script>
+</head>
+<body style="background:#F5F5F5;min-height:100vh">
+
+<header class="app-header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-logos">
+        <div class="header-logo-container" onclick="window.location.href='../home.html'">
+          <div class="header-logo-row">
+            <img src="../assets/logo-cta.png" alt="CTA" />
+          </div>
+          <span class="header-logo-subtext">HOME</span>
+        </div>
+      </div>
+      <span class="header-title">PANEL ADMIN PRO</span>
+    </div>
+    <div class="header-right">
+      <span class="header-user" id="headerUser"></span>
+      <button class="btn-logout" onclick="window.location.href='../home.html'" style="background:transparent;color:#757575;padding:8px">Volver</button>
+    </div>
+  </div>
+</header>
+
+<div class="admin-container">
+  
+  <!-- Tabs de navegación Admin -->
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="showAdminSection('stats')">📊 Estadísticas</button>
+    <button class="admin-tab" onclick="showAdminSection('users')">👥 Usuarios</button>
+    <button class="admin-tab" onclick="showAdminSection('content')">📝 Editar Contenido</button>
+  </div>
+
+  <!-- SECCIÓN 1: ESTADÍSTICAS -->
+  <div id="section-stats" class="admin-section active">
+    <div class="admin-header">
+      <h1>Estadísticas Generales</h1>
+      <p>Resumen de actividad y medias globales de la plataforma.</p>
+    </div>
+
+    <div class="filters-bar">
+      <select class="select-field" id="statFilterYear"><option value="">Todos los años</option></select>
+      <select class="select-field" id="statFilterMonth">
+        <option value="">Todos los meses</option>
+        <option value="1">Enero</option><option value="2">Febrero</option><option value="3">Marzo</option>
+        <option value="4">Abril</option><option value="5">Mayo</option><option value="6">Junio</option>
+        <option value="7">Julio</option><option value="8">Agosto</option><option value="9">Septiembre</option>
+        <option value="10">Octubre</option><option value="11">Noviembre</option><option value="12">Diciembre</option>
+      </select>
+      <select class="select-field" id="statFilterFed">
+        <option value="">Todas las federaciones</option>
+        <!-- Se llena con JS -->
+      </select>
+      <button class="btn btn-primary btn-sm" onclick="loadStats()">🔍 Aplicar</button>
+    </div>
+
+    <div class="admin-stats">
+      <div class="admin-stat">
+        <div class="admin-stat-value" id="statTotalUsers">0</div>
+        <div class="admin-stat-label">Usuarios</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat-value" id="statTotalTests">0</div>
+        <div class="admin-stat-label">Tests Realizados</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat-value" id="statAvgScore">0%</div>
+        <div class="admin-stat-label">Media Global</div>
+      </div>
+    </div>
+
+    <div class="users-table-container">
+      <div class="table-header-title">Actividad Reciente</div>
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>Usuario</th>
+            <th>Test</th>
+            <th class="text-center">Nota</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody id="recentActivityBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2: USUARIOS -->
+  <div id="section-users" class="admin-section">
+    <div class="admin-header">
+      <h1>Gestión de Usuarios</h1>
+      <p>Lista completa de usuarios registrados y su actividad detallada.</p>
+    </div>
+    <div class="users-table-container">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>Nombre y Email</th>
+            <th>Federación</th>
+            <th class="text-center">Tests</th>
+            <th class="text-center">Media</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="usersListBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3: CONTENIDO -->
+  <div id="section-content" class="admin-section">
+    <div class="admin-header">
+      <h1>Editor de Bancos de Preguntas</h1>
+      <p>Añade o modifica las preguntas de Reglas y Vídeos.</p>
+    </div>
+    
+    <div class="content-editor-tabs">
+      <button class="btn btn-secondary btn-sm" onclick="loadQuestionEditor('reglas')">Banco Reglas</button>
+      <button class="btn btn-secondary btn-sm" onclick="loadQuestionEditor('videos')">Banco Vídeos</button>
+    </div>
+
+    <div id="editorContainer" class="editor-container">
+      <p style="text-align:center;padding:40px;color:#9E9E9E">Selecciona un banco para editar.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal Detalle Usuario -->
+<div id="modalUserDetail" class="admin-modal">
+  <div class="admin-modal-content">
+    <div class="admin-modal-header">
+      <h2 id="modalUserName">Detalle del Usuario</h2>
+      <button class="close-modal" onclick="closeModal()">✕</button>
+    </div>
+    <div class="admin-modal-body">
+      <div id="modalUserInfo"></div>
+      <div class="users-table-container" style="margin-top:20px">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Test</th>
+              <th class="text-center">Nota</th>
+              <th>Tiempo</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody id="modalUserTestsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/data/questions-reglas.js"></script>
+<script src="../js/data/questions-videos.js"></script>
+<script src="../js/admin.js"></script>
+</body>
+</html>

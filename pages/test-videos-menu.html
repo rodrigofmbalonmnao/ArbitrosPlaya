@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ArbitrosPlaya — Test Vídeos</title>
+  <link rel="stylesheet" href="../css/global.css"/>
+  <link rel="stylesheet" href="../css/videos.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase-ready.js"></script>
+</head>
+<body style="background:#F5F5F5;min-height:100vh">
+<header class="app-header">
+  <div class="header-inner">
+    <button class="btn-back" onclick="window.location.href='../home.html'">← Volver</button>
+    <span class="header-title">Test Vídeos</span>
+    <div></div>
+  </div>
+</header>
+<div class="videos-menu">
+  <h1 class="videos-menu-title">Sección de Vídeos</h1>
+  <p class="videos-menu-subtitle">Elige una opción para continuar</p>
+  <div class="videos-options">
+    <a href="banco-videos.html" class="video-option-card">
+      <div class="video-option-icon">🎥</div>
+      <div class="video-option-title">Banco de Vídeos</div>
+      <div class="video-option-desc">Explora vídeos clasificados por categorías</div>
+    </a>
+    <a href="test-videos.html" class="video-option-card">
+      <div class="video-option-icon">📝</div>
+      <div class="video-option-title">Test de Vídeos</div>
+      <div class="video-option-desc">5 preguntas · Analiza situaciones de juego reales</div>
+    </a>
+  </div>
+</div>
+<script>window.DataService.requireAuth();</script>
+</body>
+</html>
