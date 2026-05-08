@@ -2,13 +2,23 @@
 // ArbitrosPlaya - Capa de Datos (Supabase-Ready + Demo Fallback)
 // ============================================
 
-const SUPABASE_URL = 'https://TU_PROYECTO.supabase.co';
-const SUPABASE_KEY = 'TU_SUPABASE_ANON_KEY';
+const SUPABASE_URL = 'https://tqsjpdcmvmzullpodvyd.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxc2pwZGNtdm16dWxscG9kdnlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyNzEzODYsImV4cCI6MjA5Mzg0NzM4Nn0.X9NxzjwKYU0CVXPIHBUmm41QemNOz87y3xyMtTK0uFc';
 
 const isSupabaseConfigured = SUPABASE_URL && !SUPABASE_URL.includes('TU_PROYECTO');
-const supabaseClient = (window.supabase && isSupabaseConfigured) 
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) 
-  : null;
+const supabaseClient = (() => {
+  if (window.supabase && isSupabaseConfigured) {
+    try {
+      return window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    } catch(e) {
+      console.error('Error inicializando Supabase:', e);
+      return null;
+    }
+  }
+  return null;
+})();
+
+console.log('Modo:', supabaseClient ? 'SUPABASE' : 'DEMO');
 
 const ADMIN_EMAIL = 'adminarbitrosplaya@gmail.com';
 
