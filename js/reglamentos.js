@@ -13,7 +13,7 @@
       hu.textContent = user.nombre + ' ' + (user.apellido || '');
     }
 
-    const regs = DataService.getReglamentos();
+    const regs = await DataService.getReglamentos();
     const grid = document.getElementById('reglamentosGrid');
     
     if (!grid) return;

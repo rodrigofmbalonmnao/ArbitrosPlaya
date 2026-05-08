@@ -23,11 +23,11 @@
           <span class="header-logo-subtext">HOME</span>
         </div>
       </div>
-      <span class="header-title">PANEL ADMIN PRO</span>
+      <span class="header-title">Panel de Administración</span>
     </div>
     <div class="header-right">
       <span class="header-user" id="headerUser"></span>
-      <button class="btn-logout" onclick="window.location.href='../home.html'" style="background:transparent;color:#757575;padding:8px">Volver</button>
+      <button class="btn-logout" onclick="DataService.logout()">Cerrar sesión</button>
     </div>
   </div>
 </header>
@@ -39,6 +39,7 @@
     <button class="admin-tab active" onclick="showAdminSection('stats')">📊 Estadísticas</button>
     <button class="admin-tab" onclick="showAdminSection('users')">👥 Usuarios</button>
     <button class="admin-tab" onclick="showAdminSection('content')">📝 Editar Contenido</button>
+    <button class="admin-tab" onclick="showAdminSection('reglamentos')">📚 Reglamentos</button>
   </div>
 
   <!-- SECCIÓN 1: ESTADÍSTICAS -->
@@ -87,7 +88,7 @@
             <th>Usuario</th>
             <th>Test</th>
             <th class="text-center">Nota</th>
-            <th>Fecha</th>
+            <th>Fecha y Hora</th>
           </tr>
         </thead>
         <tbody id="recentActivityBody"></tbody>
@@ -101,6 +102,32 @@
       <h1>Gestión de Usuarios</h1>
       <p>Lista completa de usuarios registrados y su actividad detallada.</p>
     </div>
+    <div class="filters-bar" style="margin-bottom:20px">
+      <select class="select-field" id="userFilterFed" onchange="loadUsersList()">
+        <option value="">Todas las federaciones</option>
+        <option>Real Federación Española de Balonmano (RFEBM)</option>
+        <option>Federación Andaluza de Balonmano</option>
+        <option>Federación Aragonesa de Balonmano</option>
+        <option>Federación Asturiana de Balonmano</option>
+        <option>Federación Balear de Balonmano</option>
+        <option>Federación Canaria de Balonmano</option>
+        <option>Federación Cántabra de Balonmano</option>
+        <option>Federación de Balonmano de Castilla y León</option>
+        <option>Federación de Balonmano de Castilla-La Mancha</option>
+        <option>Federación Catalana de Balonmano</option>
+        <option>Federación de Balonmano de Ceuta</option>
+        <option>Federación Extremeña de Balonmano</option>
+        <option>Federación Gallega de Balonmano</option>
+        <option>Federación Madrileña de Balonmano</option>
+        <option>Federación de Balonmano de Melilla</option>
+        <option>Federación de Balonmano de la Región de Murcia</option>
+        <option>Federación Navarra de Balonmano</option>
+        <option>Federación Vasca de Balonmano (EHF)</option>
+        <option>Federación Riojana de Balonmano</option>
+        <option>Federación Valenciana de Balonmano</option>
+        <option>Otra...</option>
+      </select>
+    </div>
     <div class="users-table-container">
       <table class="users-table">
         <thead>
@@ -109,6 +136,7 @@
             <th>Federación</th>
             <th class="text-center">Tests</th>
             <th class="text-center">Media</th>
+            <th class="text-center">Duración Media</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -134,6 +162,43 @@
     </div>
   </div>
 
+  <!-- SECCIÓN 4: REGLAMENTOS -->
+  <div id="section-reglamentos" class="admin-section">
+    <div class="admin-header">
+      <h1>Gestión de Reglamentos</h1>
+      <p>Sube y gestiona los archivos PDF oficiales de la plataforma.</p>
+    </div>
+
+    <div class="admin-card" style="margin-bottom:24px; padding:20px; background:white; border-radius:12px; border:1px solid #E0E0E0">
+      <h3 style="margin-bottom:16px">Subir Nuevo Reglamento</h3>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px">
+        <input type="text" id="regTitle" class="select-field" placeholder="Título (ej: Reglas 2026)" style="width:100%">
+        <input type="text" id="regDesc" class="select-field" placeholder="Descripción corta" style="width:100%">
+        <input type="text" id="regYear" class="select-field" placeholder="Año / Edición" style="width:100%">
+        <input type="text" id="regIcon" class="select-field" placeholder="Icono (ej: 📕)" style="width:100%">
+        <div style="grid-column: span 2">
+          <label style="display:block; font-size:0.8rem; margin-bottom:4px">Archivo PDF:</label>
+          <input type="file" id="regFile" accept="application/pdf" class="select-field" style="width:100%">
+        </div>
+      </div>
+      <button class="btn btn-primary" style="margin-top:20px" onclick="handleUploadReg()">🚀 Subir Reglamento</button>
+    </div>
+
+    <div class="users-table-container">
+      <div class="table-header-title">Reglamentos Actuales</div>
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>Documento</th>
+            <th>Año</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="reglamentosListBody"></tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
 
 <!-- Modal Detalle Usuario -->
@@ -152,7 +217,7 @@
               <th>Test</th>
               <th class="text-center">Nota</th>
               <th>Tiempo</th>
-              <th>Fecha</th>
+              <th>Fecha y Hora</th>
             </tr>
           </thead>
           <tbody id="modalUserTestsBody"></tbody>
@@ -161,6 +226,46 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Editor de Preguntas -->
+<div id="modalQuestionEditor" class="admin-modal">
+  <div class="admin-modal-content" style="max-width: 650px;">
+    <div class="admin-modal-header">
+      <h2 id="qModalTitle">Editar Pregunta</h2>
+      <button class="close-modal" onclick="closeQModal()">✕</button>
+    </div>
+    <div class="admin-modal-body">
+      <div style="margin-bottom: 20px;">
+        <label style="display:block; font-weight:700; margin-bottom:8px">Texto de la Pregunta:</label>
+        <textarea id="qText" class="select-field" style="height: 100px; resize: vertical; padding:12px" placeholder="Escribe aquí la pregunta..."></textarea>
+      </div>
+      
+      <!-- Campo de Video (Solo para banco de vídeos) -->
+      <div id="qVideoGroup" style="margin-bottom: 20px; display:none">
+        <label style="display:block; font-weight:700; margin-bottom:8px">Adjuntar Vídeo:</label>
+        <input type="file" id="qVideoFile" accept="video/mp4,video/webm,video/ogg,video/quicktime" class="select-field" style="width:100%">
+        <p style="font-size:0.75rem; color:#9E9E9E; margin-top:4px">Si prefieres una URL de YouTube/Vimeo, introdúcela en el texto o deja este campo vacío.</p>
+      </div>
+      
+      <div id="qOptionsContainer">
+        <label style="display: block; margin-bottom: 12px; font-weight: 700;">Opciones de Respuesta:</label>
+        <!-- Opciones dinámicas -->
+      </div>
+      
+      <button class="btn btn-secondary btn-sm" style="margin-top: 10px; background:#F5F5F5" onclick="addOptionField()">➕ Añadir Opción</button>
+      
+      <div style="display: flex; gap: 12px; margin-top: 30px; justify-content: flex-end; border-top: 1px solid #EEE; padding-top: 20px;">
+        <button class="btn btn-secondary" onclick="closeQModal()">Cancelar</button>
+        <button class="btn btn-primary" id="btnSaveQuestion" onclick="handleSaveQuestion()">💾 Guardar Pregunta</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="main-footer">
+  <p>Plataforma de Formación Arbitral · Balonmano Playa creada por <span class="highlight-red">Rodrigo Jiménez Abades</span> · Árbitro Territorial Federación Madrileña de Balonmano</p>
+  <p>Ante cualquier consulta o mejora de la plataforma arbitral contacte con: <a href="mailto:adminarbitrosplaya@gmail.com" class="highlight-red">adminarbitrosplaya@gmail.com</a></p>
+</footer>
 
 <script src="../js/data/questions-reglas.js"></script>
 <script src="../js/data/questions-videos.js"></script>

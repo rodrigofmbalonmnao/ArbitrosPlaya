@@ -109,7 +109,13 @@ async function handleRegister(e) {
 
   try {
     await DataService.register(email, password, { nombre, apellido, federacion });
-    showVerify(email);
+    
+    if (DataService.isDemo) {
+      showToast('✅ Registro completado correctamente', 'success');
+      setTimeout(() => showTab('login'), 1500);
+    } else {
+      showVerify(email);
+    }
   } catch (err) {
     showError(err.message);
   } finally {

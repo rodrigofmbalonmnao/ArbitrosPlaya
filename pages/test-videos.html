@@ -21,11 +21,11 @@
           <span class="header-logo-subtext">HOME</span>
         </div>
       </div>
-      <span class="header-title">Vídeos</span>
+      <span class="header-title">Test de Vídeos</span>
     </div>
     <div class="header-right">
       <span class="header-user" id="headerUser"></span>
-      <button class="btn-logout" onclick="goBackVideo()">Cerrar sesión</button>
+      <button class="btn-logout" onclick="DataService.logout()">Cerrar sesión</button>
     </div>
   </div>
 </header>
@@ -39,7 +39,7 @@
         <div class="warning-icon">🎬</div>
         <div class="warning-title">Antes de comenzar</div>
         <div class="warning-text">
-          Se advierte que las preguntas que a continuación se presentarán forman parte del Catálogo de la IHF correspondiente a las Reglas de Juego de Balonmano Playa 2026. Observa el vídeo y selecciona la respuesta correcta. Se generarán 8 vídeos aleatorios.
+          Se advierte que las preguntas que a continuación se presentan, corresponden a las Reglas de Juego de Balonmano Playa 2026. Las preguntas pueden tener múltiples respuestas.
         </div>
         <button class="btn-start" onclick="startVideoTest()">EMPEZAR</button>
       </div>
@@ -48,6 +48,7 @@
   <!-- SCREEN 3: Test -->
   <div class="test-screen" id="screenTest">
     <div class="test-progress-screen">
+      <img src="../assets/logo-cta.png" alt="CTA" class="test-logo-cta" />
       <div class="test-header-bar">
         <div class="test-timer" id="timer">00:00</div>
         <div class="test-progress-info">
@@ -90,8 +91,9 @@
         <div class="result-summary-card result-missed"><div class="result-summary-num" id="resMissed">0</div><div class="result-summary-label">Sin marcar</div></div>
       </div>
       <div class="results-actions">
-        <button class="btn btn-primary" id="btnRepeat" onclick="repeatVideoTest()">🔄 Repetir Test</button>
-        <button class="btn btn-secondary" onclick="showVideoSolutions()">📖 Ver Soluciones</button>
+        <button class="btn btn-primary" onclick="startNewVideoTest()">🆕 Nuevo Test</button>
+        <button class="btn btn-primary" id="btnRepeatSameVideo" style="background:#424242;border-color:#424242" onclick="repeatSameVideoTest()">🔄 Repetir Test</button>
+        <button class="btn btn-secondary" onclick="showVideoSolutions(true)">📖 Ver Soluciones</button>
       </div>
       <div class="review-section hidden" id="reviewSection">
         <div class="review-title">Revisión completa</div>
@@ -103,6 +105,11 @@
     </div>
   </div>
 </div>
+<footer class="main-footer">
+  <p>Plataforma de Formación Arbitral · Balonmano Playa creada por <span class="highlight-red">Rodrigo Jiménez Abades</span> · Árbitro Territorial Federación Madrileña de Balonmano</p>
+  <p>Ante cualquier consulta o mejora de la plataforma arbitral contacte con: <a href="mailto:adminarbitrosplaya@gmail.com" class="highlight-red">adminarbitrosplaya@gmail.com</a></p>
+</footer>
+
 <script src="../js/data/questions-videos.js"></script>
 <script src="../js/test-videos.js"></script>
 </body>

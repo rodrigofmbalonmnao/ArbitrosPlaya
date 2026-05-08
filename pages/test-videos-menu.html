@@ -1,38 +1,76 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ArbitrosPlaya — Test Vídeos</title>
-  <link rel="stylesheet" href="../css/global.css"/>
-  <link rel="stylesheet" href="../css/videos.css"/>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/videos.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-ready.js"></script>
+  <style>
+    .videos-logo-interactive {
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .videos-logo-interactive:hover {
+      transform: scale(1.08);
+    }
+  </style>
 </head>
+
 <body style="background:#F5F5F5;min-height:100vh">
-<header class="app-header">
-  <div class="header-inner">
-    <button class="btn-back" onclick="window.location.href='../home.html'">← Volver</button>
-    <span class="header-title">Test Vídeos</span>
-    <div></div>
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <div class="header-logos">
+          <div class="header-logo-container" onclick="window.location.href='../home.html'">
+            <div class="header-logo-row">
+              <img src="../assets/logo-cta.png" alt="CTA" />
+            </div>
+            <span class="header-logo-subtext">HOME</span>
+          </div>
+        </div>
+        <span class="header-title">Vídeos</span>
+      </div>
+      <div class="header-right">
+        <span class="header-user" id="headerUser"></span>
+        <button class="btn-logout" onclick="DataService.logout()">Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+<div class="videos-menu" style="margin-top: 40px;">
+  <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 40px;">
+    <img src="../assets/logo-cta.png" alt="Logo CTA" class="videos-logo-interactive" style="height: 150px; width: auto; filter: drop-shadow(0 10px 25px rgba(0,0,0,0.2)); margin-bottom: 20px;">
+    <h1 class="videos-menu-title" style="font-size: 2rem; margin-bottom: 4px;">Sección de Vídeos</h1>
+    <p class="videos-menu-subtitle" style="font-size: 1.1rem;">Elige una opción para continuar</p>
   </div>
-</header>
-<div class="videos-menu">
-  <h1 class="videos-menu-title">Sección de Vídeos</h1>
-  <p class="videos-menu-subtitle">Elige una opción para continuar</p>
-  <div class="videos-options">
-    <a href="banco-videos.html" class="video-option-card">
-      <div class="video-option-icon">🎥</div>
-      <div class="video-option-title">Banco de Vídeos</div>
-      <div class="video-option-desc">Explora vídeos clasificados por categorías</div>
-    </a>
-    <a href="test-videos.html" class="video-option-card">
-      <div class="video-option-icon">📝</div>
-      <div class="video-option-title">Test de Vídeos</div>
-      <div class="video-option-desc">5 preguntas · Analiza situaciones de juego reales</div>
-    </a>
+    <div class="videos-options">
+      <a href="banco-videos.html" class="video-option-card">
+        <div class="video-option-icon">🎥</div>
+        <div class="video-option-title">Banco de Vídeos</div>
+        <div class="video-option-desc">Explora vídeos clasificados por categorías</div>
+      </a>
+      <a href="test-videos.html" class="video-option-card">
+        <div class="video-option-icon">📝</div>
+        <div class="video-option-title">Test de Vídeos</div>
+        <div class="video-option-desc">5 preguntas · Analiza situaciones de juego reales</div>
+      </a>
+    </div>
   </div>
-</div>
-<script>window.DataService.requireAuth();</script>
+  <footer class="main-footer">
+    <p>Plataforma de Formación Arbitral · Balonmano Playa creada por <span class="highlight-red">Rodrigo Jiménez Abades</span> · Árbitro Territorial Federación Madrileña de Balonmano</p>
+    <p>Ante cualquier consulta o mejora de la plataforma arbitral contacte con: <a href="mailto:adminarbitrosplaya@gmail.com" class="highlight-red">adminarbitrosplaya@gmail.com</a></p>
+  </footer>
+  <script>
+    (async function () {
+      const user = await DataService.requireAuth();
+      if (user) {
+        document.getElementById('headerUser').textContent = user.nombre + ' ' + (user.apellido || '');
+      }
+    })();
+  </script>
 </body>
+
 </html>

@@ -45,10 +45,10 @@ function shuffle(array) {
 }
 
 // ---- Start test ----
-function startTest() {
-  // Seleccionar 10 preguntas aleatorias del banco global
-  const allQuestions = [...PREGUNTAS_REGLAS];
-  const selectedQuestions = shuffle(allQuestions).slice(0, 10);
+async function startTest() {
+  // Seleccionar 10 preguntas aleatorias del banco global (dinámico)
+  const allQuestions = await DataService.getQuestionsBank();
+  const selectedQuestions = shuffle([...allQuestions]).slice(0, 10);
   
   currentTestData = {
     id: 'random-' + Date.now(),
@@ -175,16 +175,19 @@ async function finishTest() {
   document.getElementById('resIncorrect').textContent = incorrectCount;
   document.getElementById('resMissed').textContent = missedCount;
   document.getElementById('reviewSection').classList.add('hidden');
+  
+  const btnRepeat = document.getElementById('btnRepeatSame');
+  if (btnRepeat) btnRepeat.style.display = 'inline-block';
 
   // Save result
   try {
     currentResultId = await DataService.saveTestResult({
-      testNombre: currentTestData.nombre,
-      testType: 'reglas',
+      test_nombre: currentTestData.nombre,
+      test_type: 'reglas',
       score: Math.max(0, score),
       maxScore,
       percentage: parseFloat(percentage.toFixed(1)),
-      timeSeconds: timerSeconds,
+      time_seconds: timerSeconds,
       answers: preguntas.map((q, qi) => ({ 
         questionId: q.id, 
         selected: Array.from(userAnswers[qi]), 
@@ -197,14 +200,30 @@ async function finishTest() {
   }
 
   showScreen('screenResults');
+  showSolutions(false); // VISTA AUTOMÁTICA (Muestra aciertos/errores del usuario)
 }
 
-// ---- Repeat ----
-function repeatTest() { startTest(); }
+// ---- Repeat / New ----
+function startNewTest() { startTest(); }
+function repeatSameTest() {
+  if (!currentTestData) return;
+  currentQ = 0;
+  userAnswers = currentTestData.preguntas.map(() => new Set());
+  timerSeconds = 0;
+  currentResultId = null;
+  startTimer();
+  renderQuestion();
+  renderDots();
+  showScreen('screenTest');
+}
 
 // ---- Show solutions ----
-async function showSolutions() {
-  if (currentResultId) await DataService.markSawSolutions(currentResultId);
+async function showSolutions(revealAll = false) {
+  if (revealAll && currentResultId) {
+    await DataService.markSawSolutions(currentResultId);
+    const btnRepeat = document.getElementById('btnRepeatSame');
+    if (btnRepeat) btnRepeat.style.display = 'none';
+  }
   
   const container = document.getElementById('reviewList');
   container.innerHTML = '';
@@ -212,15 +231,23 @@ async function showSolutions() {
 
   preguntas.forEach((q, qi) => {
     const selected = userAnswers[qi];
+    
     let ansHTML = '';
     q.opciones.forEach((opt, oi) => {
       const isCorrect = q.correctas.includes(oi);
-      const isSelected = selected.has(oi);
+      const isSelected = selected && selected.has(oi);
       
       let cls = 'neutral';
-      if (isSelected && isCorrect) cls = 'correct'; // Azul
-      else if (isSelected && !isCorrect) cls = 'incorrect'; // Rojo
-      else if (!isSelected && isCorrect) cls = 'correct'; // Azul (para mostrar qué era correcto)
+      
+      if (revealAll) {
+        // VISTA SOLUCIONES: Solo mostrar correctas en azul
+        if (isCorrect) cls = 'correct';
+      } else {
+        // VISTA AUTOMÁTICA: Mostrar lo que el usuario marcó (Azul/Rojo)
+        if (isSelected) {
+          cls = isCorrect ? 'correct' : 'incorrect';
+        }
+      }
       
       ansHTML += `<div class="review-answer-item ${cls}">${opt}</div>`;
     });

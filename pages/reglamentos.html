@@ -8,6 +8,15 @@
   <link rel="stylesheet" href="../css/reglamentos.css"/>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-ready.js"></script>
+  <style>
+    .videos-logo-interactive {
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .videos-logo-interactive:hover {
+      transform: scale(1.08);
+    }
+  </style>
 </head>
 <body style="background:#F5F5F5;min-height:100vh">
 <header class="app-header">
@@ -25,17 +34,27 @@
     </div>
     <div class="header-right">
       <span class="header-user" id="headerUser"></span>
-      <button class="btn-logout" onclick="window.location.href='../home.html'">Cerrar sesión</button>
+      <button class="btn-logout" onclick="DataService.logout()">Cerrar sesión</button>
     </div>
   </div>
 </header>
 <div class="reglamentos-container">
-  <div class="reglamentos-header">
-    <h1>📖 Biblioteca de Reglamentos</h1>
-    <p>Consulta y descarga los reglamentos oficiales de balonmano playa</p>
+  <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 40px; margin-top: 20px;">
+    <img src="../assets/logo-cta.png" alt="Logo CTA" class="videos-logo-interactive" style="height: 160px; width: auto; filter: drop-shadow(0 12px 30px rgba(0,0,0,0.2)); margin-bottom: 20px;">
+    <h1 style="font-size: 2.2rem; font-weight: 800; color: #1A1A1A; margin-bottom: 8px;">Biblioteca de Reglamentos</h1>
+    <p style="color: #9E9E9E; font-size: 1.1rem;">Consulta y descarga los documentos oficiales</p>
+  </div>
+
+  <div class="contact-banner">
+    <span class="contact-banner-text">¿Tienes nuevos reglamentos o recursos teóricos? (presentaciones, ponencias, etc.) Envíalos a: <span class="contact-banner-email">adminarbitrosplaya@gmail.com</span></span>
   </div>
   <div class="reglamentos-grid" id="reglamentosGrid"></div>
 </div>
+<footer class="main-footer">
+  <p>Plataforma de Formación Arbitral · Balonmano Playa creada por <span class="highlight-red">Rodrigo Jiménez Abades</span> · Árbitro Territorial Federación Madrileña de Balonmano</p>
+  <p>Ante cualquier consulta o mejora de la plataforma arbitral contacte con: <a href="mailto:adminarbitrosplaya@gmail.com" class="highlight-red">adminarbitrosplaya@gmail.com</a></p>
+</footer>
+
 <script src="../js/reglamentos.js"></script>
 </body>
 </html>

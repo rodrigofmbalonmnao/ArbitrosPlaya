@@ -47,3 +47,17 @@
 @media (max-width: 480px) {
   .reglamentos-grid { grid-template-columns: 1fr; }
 }
+
+/* Contact Banner */
+.contact-banner {
+  background: linear-gradient(135deg, #1A1A1A, #333); border-radius: 20px;
+  padding: 24px 32px; display: flex; align-items: center; justify-content: space-between;
+  color: white; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border-left: 6px solid #C8102E;
+}
+.contact-banner-text { font-size: 1.1rem; font-weight: 600; }
+.contact-banner-email { font-weight: 700; color: #FF4D6D; background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 6px; margin-left: 8px; }
+
+@media (max-width: 600px) {
+  .contact-banner { flex-direction: column; text-align: center; gap: 16px; }
+}

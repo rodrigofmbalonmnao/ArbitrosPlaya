@@ -1,7 +1,14 @@
 // ============================================
 // ArbitrosPlaya - videos.js (Banco de Vídeos)
 // ============================================
-DataService.requireAuth();
+// ---- Auth & User Display ----
+(async function initAuth() {
+  const user = await DataService.requireAuth();
+  if (user) {
+    const hu = document.getElementById('headerUser');
+    if (hu) hu.textContent = user.nombre + ' ' + (user.apellido || '');
+  }
+})();
 
 function initBanco() {
   const container = document.getElementById('categoriesList');

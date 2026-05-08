@@ -39,9 +39,10 @@ function shuffle(array) {
 }
 
 // ---- Start test ----
-function startVideoTest() {
-  const allQuestions = [...PREGUNTAS_VIDEOS];
-  const selectedQuestions = shuffle(allQuestions).slice(0, 8); // Ahora 8 vídeos
+async function startVideoTest() {
+  // Seleccionar 8 vídeos aleatorios del banco global (dinámico)
+  const allQuestions = await DataService.getVideosBank();
+  const selectedQuestions = shuffle([...allQuestions]).slice(0, 8); 
   
   currentTestData = {
     id: 'random-vid-' + Date.now(),
@@ -78,8 +79,21 @@ function renderQ() {
   document.getElementById('btnPrev').style.visibility = currentQ === 0 ? 'hidden' : 'visible';
   document.getElementById('btnNext').textContent = currentQ === total-1 ? 'Finalizar →' : 'Siguiente →';
   
-  // Vídeo
-  document.getElementById('videoContainer').innerHTML = `<iframe src="${q.videoUrl}" allowfullscreen></iframe>`;
+  // Vídeo dinámico (Iframe o Nativo)
+  const container = document.getElementById('videoContainer');
+  if (q.videoUrl && (q.videoUrl.includes('youtube.com') || q.videoUrl.includes('vimeo.com') || q.videoUrl.includes('embed'))) {
+    container.innerHTML = `<iframe src="${q.videoUrl}" allowfullscreen></iframe>`;
+  } else if (q.videoUrl) {
+    // Si es una URL de Supabase o simulación
+    container.innerHTML = `
+      <video controls style="width:100%; max-height:400px; border-radius:12px; background:black">
+        <source src="${q.videoUrl}" type="video/mp4">
+        <source src="${q.videoUrl}" type="video/webm">
+        Tu navegador no soporta el formato de vídeo.
+      </video>`;
+  } else {
+    container.innerHTML = `<div style="padding:40px; text-align:center; background:#EEE; border-radius:12px; color:#9E9E9E">Vídeo no disponible</div>`;
+  }
   
   // Opciones
   const c = document.getElementById('optionsList');
@@ -141,14 +155,17 @@ async function finishVideoTest() {
   document.getElementById('resMissed').textContent = missedCount;
   document.getElementById('reviewSection').classList.add('hidden');
 
+  const btnR = document.getElementById('btnRepeatSameVideo');
+  if (btnR) btnR.style.display = 'inline-block';
+
   try {
     currentResultId = await DataService.saveTestResult({ 
-      testNombre: currentTestData.nombre, 
-      testType: 'video', 
+      test_nombre: currentTestData.nombre, 
+      test_type: 'video', 
       score: Math.max(0,score), 
       maxScore, 
       percentage: parseFloat(pct.toFixed(1)), 
-      timeSeconds: timerSeconds, 
+      time_seconds: timerSeconds, 
       answers: preguntas.map((q,qi)=>({
         questionId:q.id,
         selected:Array.from(userAnswers[qi]),
@@ -161,23 +178,45 @@ async function finishVideoTest() {
   }
 
   showScreen('screenResults');
+  showVideoSolutions(false); // VISTA AUTOMÁTICA
 }
 
-function repeatVideoTest() { startVideoTest(); }
+function startNewVideoTest() { startVideoTest(); }
+function repeatSameVideoTest() {
+  if (!currentTestData) return;
+  currentQ = 0;
+  userAnswers = currentTestData.preguntas.map(() => new Set());
+  timerSeconds = 0;
+  currentResultId = null;
+  startTimer();
+  renderQ();
+  renderDots();
+  showScreen('screenTest');
+}
 
-async function showVideoSolutions() {
-  if (currentResultId) await DataService.markSawSolutions(currentResultId);
+async function showVideoSolutions(revealAll = false) {
+  if (revealAll && currentResultId) {
+    await DataService.markSawSolutions(currentResultId);
+    const btnR = document.getElementById('btnRepeatSameVideo');
+    if (btnR) btnR.style.display = 'none';
+  }
   
   const c = document.getElementById('reviewList'); c.innerHTML = '';
   currentTestData.preguntas.forEach((q,qi) => {
     const sel = userAnswers[qi];
+    
     let html = '';
     q.opciones.forEach((opt,oi) => {
-      const isC = q.correctas.includes(oi), isS = sel.has(oi);
-      let cls='neutral';
-      if (isS&&isC) cls='correct'; // Azul
-      else if (isS&&!isC) cls='incorrect'; // Rojo
-      else if (!isS&&isC) cls='correct'; // Azul
+      const isC = q.correctas.includes(oi), isS = sel && sel.has(oi);
+      
+      let cls = 'neutral';
+      if (revealAll) {
+        if (isC) cls = 'correct';
+      } else {
+        if (isS) {
+          cls = isC ? 'correct' : 'incorrect';
+        }
+      }
       
       html += `<div class="review-answer-item ${cls}">${opt}</div>`;
     });

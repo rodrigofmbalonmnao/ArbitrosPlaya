@@ -33,9 +33,13 @@ async function loadNotas() {
   const year = document.getElementById('filterYear').value;
   const month = document.getElementById('filterMonth').value;
   const type = document.getElementById('filterType').value;
+  const dateFrom = document.getElementById('filterDateFrom').value;
+  const dateTo = document.getElementById('filterDateTo').value;
   
   try {
-    const results = await DataService.getUserResults(activeUser.id, { year, month, type });
+    const results = await DataService.getUserResults(activeUser.id, { 
+      year, month, type, dateFrom, dateTo 
+    });
 
     // Stats
     const total = results.length;
@@ -71,9 +75,8 @@ async function loadNotas() {
       
       tr.innerHTML = `
         <td><span class="type-badge ${typeClass}">${typeIcon} ${typeLabel}</span></td>
-        <td>${r.test_nombre || 'Test'}</td>
         <td class="score-cell ${scoreClass}">${(r.percentage || 0).toFixed(1)}%</td>
-        <td>${DataService.formatTime(r.time_seconds || 0)}</td>
+        <td>${DataService.formatTime(r.time_seconds || r.timeSeconds || 0)}</td>
         <td>${DataService.formatDate(r.created_at)}</td>
       `;
       tbody.appendChild(tr);
