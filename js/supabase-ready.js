@@ -33,7 +33,10 @@ const DataService = {
   async register(email, password, userData) {
     if (supabaseClient) {
       const { data, error } = await supabaseClient.auth.signUp({
-        email, password, options: { data: { ...userData, isAdmin: email === ADMIN_EMAIL } }
+        email, password, options: { 
+          data: { ...userData, isAdmin: email === ADMIN_EMAIL },
+          emailRedirectTo: 'https://rodrigofmbalonmnao.github.io/ArbitrosPlaya/index.html'
+        }
       });
       if (error) throw error;
       return data;
