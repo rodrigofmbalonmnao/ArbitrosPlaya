@@ -288,20 +288,32 @@ const DataService = {
 
   async saveVideoQuestion(question, videoFile = null) {
     checkConnection();
+    
+    // Asegurar mapeo correcto para Supabase
+    const dbQuestion = { ...question };
+    if (dbQuestion.videoTitulo !== undefined) {
+      dbQuestion.video_titulo = dbQuestion.videoTitulo;
+      delete dbQuestion.videoTitulo;
+    }
+    if (dbQuestion.videoUrl !== undefined) {
+      dbQuestion.video_url = dbQuestion.videoUrl;
+      delete dbQuestion.videoUrl;
+    }
+
     if (videoFile) {
       const fileName = `videos/${Date.now()}_${videoFile.name}`;
       const { error: uploadError } = await supabaseClient.storage.from('banco_recursos').upload(fileName, videoFile);
       if (uploadError) throw uploadError;
       const { data: { publicUrl } } = supabaseClient.storage.from('banco_recursos').getPublicUrl(fileName);
-      question.videoUrl = publicUrl;
+      dbQuestion.video_url = publicUrl;
     }
     
-    if (question.id && !question.id.toString().startsWith('temp_')) {
-      const { error } = await supabaseClient.from('preguntas_videos').update(question).eq('id', question.id);
+    if (dbQuestion.id && !dbQuestion.id.toString().startsWith('temp_')) {
+      const { error } = await supabaseClient.from('preguntas_videos').update(dbQuestion).eq('id', dbQuestion.id);
       if (error) throw error;
     } else {
-      delete question.id;
-      const { error } = await supabaseClient.from('preguntas_videos').insert([question]);
+      delete dbQuestion.id;
+      const { error } = await supabaseClient.from('preguntas_videos').insert([dbQuestion]);
       if (error) throw error;
     }
   },
