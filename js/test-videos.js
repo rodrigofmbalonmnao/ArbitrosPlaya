@@ -81,14 +81,14 @@ function renderQ() {
   
   // Vídeo dinámico (Iframe o Nativo)
   const container = document.getElementById('videoContainer');
-  if (q.videoUrl && (q.videoUrl.includes('youtube.com') || q.videoUrl.includes('vimeo.com') || q.videoUrl.includes('embed'))) {
-    container.innerHTML = `<iframe src="${q.videoUrl}" allowfullscreen></iframe>`;
-  } else if (q.videoUrl) {
+  if ((q.video_url || q.videoUrl) && ((q.video_url || q.videoUrl).includes('youtube.com') || (q.video_url || q.videoUrl).includes('vimeo.com') || (q.video_url || q.videoUrl).includes('embed'))) {
+    container.innerHTML = `<iframe src="${(q.video_url || q.videoUrl)}" allowfullscreen></iframe>`;
+  } else if ((q.video_url || q.videoUrl)) {
     // Si es una URL de Supabase o simulación
     container.innerHTML = `
       <video controls style="width:100%; max-height:400px; border-radius:12px; background:black">
-        <source src="${q.videoUrl}" type="video/mp4">
-        <source src="${q.videoUrl}" type="video/webm">
+        <source src="${(q.video_url || q.videoUrl)}" type="video/mp4">
+        <source src="${(q.video_url || q.videoUrl)}" type="video/webm">
         Tu navegador no soporta el formato de vídeo.
       </video>`;
   } else {
@@ -221,7 +221,7 @@ async function showVideoSolutions(revealAll = false) {
       html += `<div class="review-answer-item ${cls}">${opt}</div>`;
     });
     const card = document.createElement('div'); card.className = 'review-question';
-    card.innerHTML = `<div class="review-q-header"><span class="review-q-num">Vídeo ${qi+1}</span><span class="review-q-text">${q.videoTitulo||'Situación de juego'}</span></div><div class="review-answers">${html}</div>`;
+    card.innerHTML = `<div class="review-q-header"><span class="review-q-num">Vídeo ${qi+1}</span><span class="review-q-text">${(q.video_titulo || q.videoTitulo) || 'Situación de juego'}</span></div><div class="review-answers">${html}</div>`;
     c.appendChild(card);
   });
   document.getElementById('reviewSection').classList.remove('hidden');
