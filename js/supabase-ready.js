@@ -99,12 +99,13 @@ const DataService = {
     if (supabaseClient) {
       const { data: { user } } = await supabaseClient.auth.getUser();
       if (!user) return null;
+      const isAdmin = user.email === ADMIN_EMAIL;
       return {
         id: user.id, email: user.email,
-        nombre: user.user_metadata.nombre,
-        apellido: user.user_metadata.apellido,
-        federacion: user.user_metadata.federacion,
-        isAdmin: user.email === ADMIN_EMAIL
+        nombre: user.user_metadata.nombre || (isAdmin ? 'Administrador' : ''),
+        apellido: user.user_metadata.apellido || '',
+        federacion: user.user_metadata.federacion || '',
+        isAdmin: isAdmin
       };
     } else {
       const session = JSON.parse(localStorage.getItem('ap_session') || 'null');
@@ -324,10 +325,13 @@ const DataService = {
     }
   },
 
-  async resetPassword(userId, newPassword) {
+  async resetPassword(userId, newPassword, email = null) {
     if (supabaseClient) {
-      // En Supabase Auth real se usaría updateUserServiceRole o un link de reset
-      alert("En Supabase real, el usuario recibirá un email de recuperación o el admin usará la API Admin.");
+      if (!email) throw new Error("Email requerido para restablecer contraseña.");
+      const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+        redirectTo: 'https://rodrigofmbalonmnao.github.io/ArbitrosPlaya/index.html'
+      });
+      if (error) throw error;
     } else {
       let users = JSON.parse(localStorage.getItem('ap_users') || '[]');
       const user = users.find(u => u.id === userId);

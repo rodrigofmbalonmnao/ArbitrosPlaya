@@ -116,25 +116,40 @@
     <div class="verify-screen" id="verifyScreen">
       <div class="verify-icon">✉️</div>
       <div class="verify-title">Verifica tu email</div>
-      <div class="verify-subtitle">
-        Hemos enviado un código de verificación a<br/>
-        <span class="verify-email-display" id="verifyEmailDisplay"></span>
+      
+      <!-- Mensaje para Modo Demo (OTP) -->
+      <div id="verifyModeDemo">
+        <div class="verify-subtitle">
+          Hemos enviado un código de verificación a<br/>
+          <span class="verify-email-display" id="verifyEmailDisplay"></span>
+        </div>
+        <div class="code-input-container" id="codeInputs">
+          <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+          <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+          <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+          <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+          <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+          <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
+        </div>
+        <button class="btn-auth-submit" onclick="handleVerify()">Verificar código</button>
+        <button class="resend-link" id="resendBtn" onclick="handleResend()">¿No lo recibiste? Reenviar código</button>
+        <!-- DEMO hint -->
+        <div style="background:#FEF0F2;border-radius:8px;padding:10px 16px;font-size:0.8rem;color:#C8102E;text-align:center;margin-top:20px;">
+          🔧 <strong>Demo:</strong> El código de verificación es <strong>123456</strong>
+        </div>
       </div>
+
+      <!-- Mensaje para Modo Supabase (Link) -->
+      <div id="verifyModeSupabase" style="display:none">
+        <div class="verify-subtitle">
+          Te hemos enviado un email de verificación a:<br/>
+          <span class="verify-email-display" id="verifyEmailDisplayReal"></span><br/><br/>
+          <strong>Haz clic en el link</strong> que encontrarás en el mensaje para activar tu cuenta.
+        </div>
+        <button class="btn-auth-submit" onclick="showTab('login')">Volver al inicio de sesión</button>
+      </div>
+
       <div class="auth-error" id="verifyError"></div>
-      <div class="code-input-container" id="codeInputs">
-        <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
-        <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
-        <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
-        <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
-        <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
-        <input type="text" class="code-digit" maxlength="1" inputmode="numeric" pattern="[0-9]" />
-      </div>
-      <button class="btn-auth-submit" onclick="handleVerify()">Verificar código</button>
-      <button class="resend-link" id="resendBtn" onclick="handleResend()">¿No lo recibiste? Reenviar código</button>
-      <!-- DEMO hint -->
-      <div style="background:#FEF0F2;border-radius:8px;padding:10px 16px;font-size:0.8rem;color:#C8102E;text-align:center;">
-        🔧 <strong>Demo:</strong> El código de verificación es <strong>123456</strong>
-      </div>
     </div>
 
     <!-- ===== GOOGLE EXTRA (completar perfil) ===== -->

@@ -231,7 +231,7 @@ async function openUserDetail(userId) {
       </div>
       
       <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:10px;padding-top:15px;border-top:1px solid #EEE">
-        <button class="btn btn-secondary btn-sm" onclick="handleResetPassword('${user.id}')">🔄 Cambiar Contraseña</button>
+        <button class="btn btn-secondary btn-sm" onclick="handleResetPassword('${user.id}', '${user.email}')">🔄 Cambiar Contraseña</button>
         <button class="btn btn-secondary btn-sm" id="btnChangeFed" onclick="showFedSelector('${user.id}', '${user.federacion}')">📍 Cambiar Federación</button>
         <button class="btn btn-primary btn-sm" style="background:#C8102E;border-color:#C8102E" onclick="handleDeleteUser('${user.id}')">🗑️ Eliminar Usuario</button>
       </div>
@@ -279,15 +279,27 @@ async function handleDeleteUser(userId) {
   }
 }
 
-async function handleResetPassword(userId) {
-  const newPass = prompt('Introduce la nueva contraseña para el usuario:');
-  if (!newPass) return;
+async function handleResetPassword(userId, email = null) {
+  const isSupabase = !DataService.isDemo;
+  let newPass = null;
+  
+  if (!isSupabase) {
+    newPass = prompt('Introduce la nueva contraseña para el usuario:');
+    if (!newPass) return;
+  } else {
+    if (!confirm(`¿Enviar un email de recuperación de contraseña a ${email}?`)) return;
+  }
+
   try {
-    await DataService.resetPassword(userId, newPass);
-    alert('Contraseña actualizada correctamente.');
+    await DataService.resetPassword(userId, newPass, email);
+    if (isSupabase) {
+      alert(`Se ha enviado un email de recuperación a ${email}`);
+    } else {
+      alert('Contraseña actualizada correctamente.');
+    }
     openUserDetail(userId);
   } catch (err) {
-    alert('Error al cambiar contraseña');
+    alert('Error al procesar la solicitud: ' + err.message);
   }
 }
 

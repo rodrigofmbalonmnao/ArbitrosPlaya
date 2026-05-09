@@ -36,10 +36,20 @@ function showVerify(email) {
   document.getElementById('formLogin').classList.remove('active');
   document.getElementById('formRegister').classList.remove('active');
   document.getElementById('authTabs').style.display = 'none';
-  document.getElementById('verifyEmailDisplay').textContent = email;
+  
+  const isDemo = DataService.isDemo;
+  document.getElementById('verifyModeDemo').style.display = isDemo ? 'block' : 'none';
+  document.getElementById('verifyModeSupabase').style.display = isDemo ? 'none' : 'block';
+
+  if (isDemo) {
+    document.getElementById('verifyEmailDisplay').textContent = email;
+    // Focus primer dígito
+    document.querySelectorAll('.code-digit')[0].focus();
+  } else {
+    document.getElementById('verifyEmailDisplayReal').textContent = email;
+  }
+
   document.getElementById('verifyScreen').classList.add('active');
-  // Focus primer dígito
-  document.querySelectorAll('.code-digit')[0].focus();
 }
 
 // ---- Error helpers ----
