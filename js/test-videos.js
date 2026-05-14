@@ -150,8 +150,6 @@ async function finishVideoTest() {
   document.getElementById('resPercent').textContent = pct.toFixed(1)+'%';
   document.getElementById('resScore').textContent = `${Math.max(0,score)}/${maxScore}`;
   document.getElementById('resTime').textContent = DataService.formatTime(timerSeconds);
-  document.getElementById('resCorrect').textContent = correctCount;
-  document.getElementById('resIncorrect').textContent = incorrectCount;
   document.getElementById('reviewSection').classList.add('hidden');
 
   const btnR = document.getElementById('btnRepeatSameVideo');

@@ -171,8 +171,6 @@ async function finishTest() {
   document.getElementById('resPercent').textContent = percentage.toFixed(1) + '%';
   document.getElementById('resScore').textContent = `${Math.max(0, score)}/${maxScore}`;
   document.getElementById('resTime').textContent = DataService.formatTime(timerSeconds);
-  document.getElementById('resCorrect').textContent = correctCount;
-  document.getElementById('resIncorrect').textContent = incorrectCount;
   document.getElementById('reviewSection').classList.add('hidden');
   
   const btnRepeat = document.getElementById('btnRepeatSame');
