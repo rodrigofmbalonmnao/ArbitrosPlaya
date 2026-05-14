@@ -238,7 +238,7 @@ const DataService = {
 
   async deleteUser(userId) {
     checkConnection();
-    const { error } = await supabaseClient.from('profiles').delete().eq('id', userId);
+    const { error } = await supabaseClient.rpc('delete_user_admin', { target_user_id: userId });
     if (error) throw error;
   },
 
