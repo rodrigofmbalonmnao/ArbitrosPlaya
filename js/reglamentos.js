@@ -37,7 +37,6 @@
         </div>
         <div class="pdf-actions">
           <a href="${r.pdfUrl}" target="_blank" class="btn-pdf-view">📖 Consultar</a>
-          <a href="${r.pdfUrl}" download class="btn-pdf-download">⬇️ Descargar</a>
         </div>
       `;
       grid.appendChild(card);
