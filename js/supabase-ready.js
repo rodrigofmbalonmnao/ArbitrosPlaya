@@ -121,11 +121,29 @@ const DataService = {
     checkConnection();
     const { data, error } = await supabaseClient.from('reglamentos').select('*').order('fecha', { ascending: false });
     if (error) throw error;
-    return data;
+    return data.map(r => ({
+      ...r,
+      pdf_url: r.pdf_url || r.pdfUrl,
+      pdfUrl: r.pdf_url || r.pdfUrl,
+      storage_path: r.storage_path || r.storagePath,
+      storagePath: r.storage_path || r.storagePath
+    }));
   },
 
   async uploadReglamento(file, metadata) {
     checkConnection();
+    
+    // Corregir mapeo de metadata si existe
+    const dbMetadata = { ...metadata };
+    if (dbMetadata.pdfUrl !== undefined) {
+      dbMetadata.pdf_url = dbMetadata.pdfUrl;
+      delete dbMetadata.pdfUrl;
+    }
+    if (dbMetadata.storagePath !== undefined) {
+      dbMetadata.storage_path = dbMetadata.storagePath;
+      delete dbMetadata.storagePath;
+    }
+
     const fileName = `${Date.now()}_${file.name}`;
     const { data: uploadData, error: uploadError } = await supabaseClient.storage
       .from('reglamentos')
@@ -135,8 +153,8 @@ const DataService = {
     const { data: { publicUrl } } = supabaseClient.storage.from('reglamentos').getPublicUrl(fileName);
 
     const { error: dbError } = await supabaseClient.from('reglamentos').insert([{
-      ...metadata,
-      pdfUrl: publicUrl,
+      ...dbMetadata,
+      pdf_url: publicUrl,
       storage_path: fileName
     }]);
     if (dbError) throw dbError;
