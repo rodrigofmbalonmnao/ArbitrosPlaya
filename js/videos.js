@@ -96,11 +96,6 @@ function openModal(title, url) {
       <source src="${url}" type="video/mp4">
       Tu navegador no soporta la reproducción de vídeos.
     </video>
-    <div style="text-align: center; margin-top: 10px;">
-      <a href="${url}" download class="btn-primary" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 24px; text-decoration: none; border-radius: 6px; background-color: #C8102E; color: white; font-weight: 600; font-size: 0.95rem; gap: 8px;">
-        ⬇️ Descargar
-      </a>
-    </div>
   `;
   document.getElementById('videoModal').classList.add('active');
 }
