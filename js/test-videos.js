@@ -152,7 +152,6 @@ async function finishVideoTest() {
   document.getElementById('resTime').textContent = DataService.formatTime(timerSeconds);
   document.getElementById('resCorrect').textContent = correctCount;
   document.getElementById('resIncorrect').textContent = incorrectCount;
-  document.getElementById('resMissed').textContent = missedCount;
   document.getElementById('reviewSection').classList.add('hidden');
 
   const btnR = document.getElementById('btnRepeatSameVideo');

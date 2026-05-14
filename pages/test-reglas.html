@@ -44,7 +44,8 @@
           <div class="warning-icon">⚠️</div>
           <div class="warning-title">Antes de comenzar</div>
           <div class="warning-text">
-            Se advierte que las preguntas que a continuación se presentan, corresponden a las Reglas de Juego de Balonmano Playa 2026. Las preguntas pueden tener múltiples respuestas.
+            Se advierte que las preguntas que a continuación se presentan, corresponden a las Reglas de Juego de
+            Balonmano Playa 2026. Las preguntas pueden tener múltiples respuestas.
           </div>
           <button class="btn-start" onclick="startTest()">EMPEZAR</button>
         </div>
@@ -106,12 +107,17 @@
             <div class="result-summary-num" id="resIncorrect">0</div>
             <div class="result-summary-label">Incorrectas</div>
           </div>
+          <div class="result-summary-card result-missed">
+            <div class="result-summary-num" id="resMissed">0</div>
+            <div class="result-summary-label">Sin marcar</div>
+          </div>
         </div>
         <div class="results-actions">
-        <button class="btn btn-primary" onclick="startNewTest()">🆕 Nuevo Test</button>
-        <button class="btn btn-primary" id="btnRepeatSame" style="background:#424242;border-color:#424242" onclick="repeatSameTest()">🔄 Repetir Test</button>
-        <button class="btn btn-secondary" onclick="showSolutions(true)">📖 Ver Soluciones</button>
-      </div>
+          <button class="btn btn-primary" onclick="startNewTest()">🆕 Nuevo Test</button>
+          <button class="btn btn-primary" id="btnRepeatSame" style="background:#424242;border-color:#424242"
+            onclick="repeatSameTest()">🔄 Repetir Test</button>
+          <button class="btn btn-secondary" onclick="showSolutions(true)">📖 Ver Soluciones</button>
+        </div>
         <div class="review-section hidden" id="reviewSection">
           <div class="review-title">Revisión completa</div>
           <div id="reviewList"></div>
@@ -126,11 +132,13 @@
   </div>
 
   <footer class="main-footer">
-  <p>Plataforma de Formación Arbitral · Balonmano Playa creada por <span class="highlight-red">Rodrigo Jiménez Abades</span> · Árbitro Territorial Federación Madrileña de Balonmano</p>
-  <p>Ante cualquier consulta o mejora de la plataforma arbitral contacte con: <a href="mailto:adminarbitrosplaya@gmail.com" class="highlight-red">adminarbitrosplaya@gmail.com</a></p>
-</footer>
+    <p>Plataforma de Formación Arbitral · Balonmano Playa creada por <span class="highlight-red">Rodrigo Jiménez
+        Abades</span> · Árbitro Territorial Federación Madrileña de Balonmano</p>
+    <p>Ante cualquier consulta o mejora de la plataforma arbitral contacte con: <a
+        href="mailto:adminarbitrosplaya@gmail.com" class="highlight-red">adminarbitrosplaya@gmail.com</a></p>
+  </footer>
 
-<script src="../js/data/questions-reglas.js"></script>
+  <script src="../js/data/questions-reglas.js"></script>
   <script src="../js/test-reglas.js"></script>
 </body>
 

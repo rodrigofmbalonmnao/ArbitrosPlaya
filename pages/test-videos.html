@@ -1,115 +1,139 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ArbitrosPlaya — Test de Vídeos</title>
-  <link rel="stylesheet" href="../css/global.css"/>
-  <link rel="stylesheet" href="../css/test.css"/>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/test.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../js/supabase-ready.js"></script>
 </head>
-<body style="background:#F5F5F5;min-height:100vh">
-<header class="app-header">
-  <div class="header-inner">
-    <div class="header-brand">
-      <div class="header-logos">
-        <div class="header-logo-container" onclick="window.location.href='../home.html'">
-          <div class="header-logo-row">
-            <img src="../assets/logo-cta.png" alt="CTA" />
-          </div>
-          <span class="header-logo-subtext">HOME</span>
-        </div>
-      </div>
-      <span class="header-title">Test de Vídeos</span>
-    </div>
-    <div class="header-right">
-      <span class="header-user" id="headerUser"></span>
-      <button class="btn-logout" onclick="DataService.logout()">Cerrar sesión</button>
-    </div>
-  </div>
-</header>
-<div id="app">
-  <!-- SCREEN 1: Eliminada (Lista tests) -->
-  
-  <!-- SCREEN 2: Advertencia (Ahora inicial) -->
-  <div class="test-screen active" id="screenWarning">
-    <div class="warning-screen">
-      <div class="warning-card">
-        <div class="warning-icon">🎬</div>
-        <div class="warning-title">Antes de comenzar</div>
-        <div class="warning-text">
-          Se advierte que las preguntas que a continuación se presentan, corresponden a las Reglas de Juego de Balonmano Playa 2026. Las preguntas pueden tener múltiples respuestas.
-        </div>
-        <button class="btn-start" onclick="startVideoTest()">EMPEZAR</button>
-      </div>
-    </div>
-  </div>
-  <!-- SCREEN 3: Test -->
-  <div class="test-screen" id="screenTest">
-    <div class="test-progress-screen">
-      <img src="../assets/logo-cta.png" alt="CTA" class="test-logo-cta" />
-      <div class="test-header-bar">
-        <div class="test-timer" id="timer">00:00</div>
-        <div class="test-progress-info">
-          <div class="test-progress-text">Pregunta</div>
-          <div class="test-progress-num" id="progressNum">1 de 8</div>
-        </div>
-        <button class="btn btn-primary btn-sm" onclick="finishVideoTest()">Finalizar</button>
-      </div>
-      <div class="progress-bar-container">
-        <div class="progress-bar-fill" id="progressBar" style="width:20%"></div>
-      </div>
-      <!-- Vídeo arriba -->
-      <div class="video-container" id="videoContainer"></div>
-      <div class="question-card" id="questionCard">
-        <div class="question-number" id="qNumber">PREGUNTA 1</div>
-        <div class="question-hint">Observa el vídeo y selecciona la respuesta correcta</div>
-        <div class="options-list" id="optionsList"></div>
-      </div>
-      <div class="test-nav">
-        <button class="btn btn-secondary btn-sm" id="btnPrev" onclick="prevQ()">← Anterior</button>
-        <div class="question-dots" id="questionDots"></div>
-        <button class="btn btn-primary btn-sm" id="btnNext" onclick="nextQ()">Siguiente →</button>
-      </div>
-    </div>
-  </div>
-  <!-- SCREEN 4: Resultados -->
-  <div class="test-screen" id="screenResults">
-    <div class="results-screen">
-      <div class="results-header">
-        <div class="results-percentage" id="resPercent">0%</div>
-        <div class="results-label">Porcentaje de aciertos</div>
-        <div class="results-meta">
-          <div class="results-meta-item"><div class="results-meta-value" id="resScore">0/0</div><div class="results-meta-label">Puntos</div></div>
-          <div class="results-meta-item"><div class="results-meta-value" id="resTime">00:00</div><div class="results-meta-label">Tiempo</div></div>
-        </div>
-      </div>
-      <div class="results-summary">
-        <div class="result-summary-card result-correct"><div class="result-summary-num" id="resCorrect">0</div><div class="result-summary-label">Correctas</div></div>
-        <div class="result-summary-card result-incorrect"><div class="result-summary-num" id="resIncorrect">0</div><div class="result-summary-label">Incorrectas</div></div>
-      </div>
-      <div class="results-actions">
-        <button class="btn btn-primary" onclick="startNewVideoTest()">🆕 Nuevo Test</button>
-        <button class="btn btn-primary" id="btnRepeatSameVideo" style="background:#424242;border-color:#424242" onclick="repeatSameVideoTest()">🔄 Repetir Test</button>
-        <button class="btn btn-secondary" onclick="showVideoSolutions(true)">📖 Ver Soluciones</button>
-      </div>
-      <div class="review-section hidden" id="reviewSection">
-        <div class="review-title">Revisión completa</div>
-        <div id="reviewList"></div>
-        <div style="text-align:center;margin-top:24px">
-          <button class="btn btn-primary" onclick="window.location.href='../home.html'">Volver al menú principal</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<footer class="main-footer">
-  <p>Plataforma de Formación Arbitral · Balonmano Playa creada por <span class="highlight-red">Rodrigo Jiménez Abades</span> · Árbitro Territorial Federación Madrileña de Balonmano</p>
-  <p>Ante cualquier consulta o mejora de la plataforma arbitral contacte con: <a href="mailto:adminarbitrosplaya@gmail.com" class="highlight-red">adminarbitrosplaya@gmail.com</a></p>
-</footer>
 
-<script src="../js/data/questions-videos.js"></script>
-<script src="../js/test-videos.js"></script>
+<body style="background:#F5F5F5;min-height:100vh">
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <div class="header-logos">
+          <div class="header-logo-container" onclick="window.location.href='../home.html'">
+            <div class="header-logo-row">
+              <img src="../assets/logo-cta.png" alt="CTA" />
+            </div>
+            <span class="header-logo-subtext">HOME</span>
+          </div>
+        </div>
+        <span class="header-title">Test de Vídeos</span>
+      </div>
+      <div class="header-right">
+        <span class="header-user" id="headerUser"></span>
+        <button class="btn-logout" onclick="DataService.logout()">Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+  <div id="app">
+    <!-- SCREEN 1: Eliminada (Lista tests) -->
+
+    <!-- SCREEN 2: Advertencia (Ahora inicial) -->
+    <div class="test-screen active" id="screenWarning">
+      <div class="warning-screen">
+        <div class="warning-card">
+          <div class="warning-icon">🎬</div>
+          <div class="warning-title">Antes de comenzar</div>
+          <div class="warning-text">
+            Se advierte que las preguntas que a continuación se presentan, corresponden a las Reglas de Juego de
+            Balonmano Playa 2026. Las preguntas pueden tener múltiples respuestas.
+          </div>
+          <button class="btn-start" onclick="startVideoTest()">EMPEZAR</button>
+        </div>
+      </div>
+    </div>
+    <!-- SCREEN 3: Test -->
+    <div class="test-screen" id="screenTest">
+      <div class="test-progress-screen">
+        <img src="../assets/logo-cta.png" alt="CTA" class="test-logo-cta" />
+        <div class="test-header-bar">
+          <div class="test-timer" id="timer">00:00</div>
+          <div class="test-progress-info">
+            <div class="test-progress-text">Pregunta</div>
+            <div class="test-progress-num" id="progressNum">1 de 8</div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="finishVideoTest()">Finalizar</button>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar-fill" id="progressBar" style="width:20%"></div>
+        </div>
+        <!-- Vídeo arriba -->
+        <div class="video-container" id="videoContainer"></div>
+        <div class="question-card" id="questionCard">
+          <div class="question-number" id="qNumber">PREGUNTA 1</div>
+          <div class="question-hint">Observa el vídeo y selecciona la respuesta correcta</div>
+          <div class="options-list" id="optionsList"></div>
+        </div>
+        <div class="test-nav">
+          <button class="btn btn-secondary btn-sm" id="btnPrev" onclick="prevQ()">← Anterior</button>
+          <div class="question-dots" id="questionDots"></div>
+          <button class="btn btn-primary btn-sm" id="btnNext" onclick="nextQ()">Siguiente →</button>
+        </div>
+      </div>
+    </div>
+    <!-- SCREEN 4: Resultados -->
+    <div class="test-screen" id="screenResults">
+      <div class="results-screen">
+        <div class="results-header">
+          <div class="results-percentage" id="resPercent">0%</div>
+          <div class="results-label">Porcentaje de aciertos</div>
+          <div class="results-meta">
+            <div class="results-meta-item">
+              <div class="results-meta-value" id="resScore">0/0</div>
+              <div class="results-meta-label">Puntos</div>
+            </div>
+            <div class="results-meta-item">
+              <div class="results-meta-value" id="resTime">00:00</div>
+              <div class="results-meta-label">Tiempo</div>
+            </div>
+          </div>
+        </div>
+        <div class="results-summary">
+          <div class="result-summary-card result-correct">
+            <div class="result-summary-num" id="resCorrect">0</div>
+            <div class="result-summary-label">Correctas</div>
+          </div>
+          <div class="result-summary-card result-incorrect">
+            <div class="result-summary-num" id="resIncorrect">0</div>
+            <div class="result-summary-label">Incorrectas</div>
+          </div>
+          <div class="result-summary-card result-missed">
+            <div class="result-summary-num" id="resMissed">0</div>
+            <div class="result-summary-label">Sin marcar</div>
+          </div>
+        </div>
+        <div class="results-actions">
+          <button class="btn btn-primary" onclick="startNewVideoTest()">🆕 Nuevo Test</button>
+          <button class="btn btn-primary" id="btnRepeatSameVideo" style="background:#424242;border-color:#424242"
+            onclick="repeatSameVideoTest()">🔄 Repetir Test</button>
+          <button class="btn btn-secondary" onclick="showVideoSolutions(true)">📖 Ver Soluciones</button>
+        </div>
+        <div class="review-section hidden" id="reviewSection">
+          <div class="review-title">Revisión completa</div>
+          <div id="reviewList"></div>
+          <div style="text-align:center;margin-top:24px">
+            <button class="btn btn-primary" onclick="window.location.href='../home.html'">Volver al menú
+              principal</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="main-footer">
+    <p>Plataforma de Formación Arbitral · Balonmano Playa creada por <span class="highlight-red">Rodrigo Jiménez
+        Abades</span> · Árbitro Territorial Federación Madrileña de Balonmano</p>
+    <p>Ante cualquier consulta o mejora de la plataforma arbitral contacte con: <a
+        href="mailto:adminarbitrosplaya@gmail.com" class="highlight-red">adminarbitrosplaya@gmail.com</a></p>
+  </footer>
+
+  <script src="../js/data/questions-videos.js"></script>
+  <script src="../js/test-videos.js"></script>
 </body>
+
 </html>
