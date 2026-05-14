@@ -19,7 +19,7 @@
       <img src="assets/logo-cta.png" alt="CTA Logo" class="auth-logo-img" />
     </div>
     <div class="auth-app-name">ArbitrosPlaya</div>
-    <div class="auth-tagline">Plataforma de Formación Arbitral · Balonmano Playa Federación Madrileña de Balonmano</div>
+    <div class="auth-tagline" style="color: white !important;">Plataforma de Formación Arbitral · Balonmano Playa Federación Madrileña de Balonmano</div>
   </div>
 
   <!-- Auth Card -->
@@ -37,11 +37,11 @@
     <!-- ===== FORM LOGIN ===== -->
     <form class="auth-form active" id="formLogin" onsubmit="handleLogin(event)">
       <div class="input-group">
-        <label for="loginEmail">Correo electrónico</label>
+        <label for="loginEmail" style="color: white !important;">Correo electrónico</label>
         <input type="email" id="loginEmail" class="input-field" placeholder="tu@email.com" required autocomplete="email" />
       </div>
       <div class="input-group">
-        <label for="loginPassword">Contraseña (solo números)</label>
+        <label for="loginPassword" style="color: white !important;">Contraseña (solo números)</label>
         <input type="password" id="loginPassword" class="input-field" placeholder="••••••" inputmode="numeric" pattern="[0-9]*" required autocomplete="current-password" />
       </div>
       <button type="submit" class="btn-auth-submit" id="btnLogin">Iniciar Sesión</button>
@@ -56,20 +56,20 @@
     <form class="auth-form" id="formRegister" onsubmit="handleRegister(event)">
       <div class="form-row">
         <div class="input-group">
-          <label for="regNombre">Nombre</label>
+          <label for="regNombre" style="color: white !important;">Nombre</label>
           <input type="text" id="regNombre" class="input-field" placeholder="Juan" required />
         </div>
         <div class="input-group">
-          <label for="regApellido">Apellido</label>
+          <label for="regApellido" style="color: white !important;">Apellido</label>
           <input type="text" id="regApellido" class="input-field" placeholder="García" required />
         </div>
       </div>
       <div class="input-group">
-        <label for="regEmail">Correo electrónico</label>
+        <label for="regEmail" style="color: white !important;">Correo electrónico</label>
         <input type="email" id="regEmail" class="input-field" placeholder="tu@email.com" required autocomplete="email" />
       </div>
       <div class="input-group">
-        <label for="regFederacion">Federación de Balonmano</label>
+        <label for="regFederacion" style="color: white !important;">Federación de Balonmano</label>
         <select id="regFederacion" class="select-field" required>
           <option value="" disabled selected>Selecciona tu federación...</option>
           <option>Real Federación Española de Balonmano (RFEBM)</option>
@@ -96,12 +96,12 @@
         </select>
       </div>
       <div class="input-group">
-        <label for="regPassword">Contraseña (solo números)</label>
+        <label for="regPassword" style="color: white !important;">Contraseña (solo números)</label>
         <input type="password" id="regPassword" class="input-field" placeholder="Mínimo 6 dígitos" inputmode="numeric" pattern="[0-9]*" minlength="6" required />
         <span class="password-hint">Solo números · mínimo 6 dígitos</span>
       </div>
       <div class="input-group">
-        <label for="regPasswordConfirm">Confirmar contraseña</label>
+        <label for="regPasswordConfirm" style="color: white !important;">Confirmar contraseña</label>
         <input type="password" id="regPasswordConfirm" class="input-field" placeholder="Repite la contraseña" inputmode="numeric" pattern="[0-9]*" required />
       </div>
       <button type="submit" class="btn-auth-submit" id="btnRegister">Registrarse</button>
@@ -183,12 +183,12 @@
     </div>
 
   </div><!-- /auth-card -->
+  <footer class="main-footer">
+    <p style="color: white !important;">Plataforma de Formación Arbitral · Balonmano Playa</p>
+    <p style="color: white !important;">Ante cualquier consulta o mejora de la plataforma arbitral contacte con: <a href="mailto:adminarbitrosplaya@gmail.com" class="highlight-red">adminarbitrosplaya@gmail.com</a></p>
+    <p class="highlight-red">R.J.A.</p>
+  </footer>
 </div><!-- /auth-page -->
-
-<footer class="main-footer">
-  <p>Plataforma de Formación Arbitral · Balonmano Playa creada por <span class="highlight-red">Rodrigo Jiménez Abades</span> · Árbitro Territorial Federación Madrileña de Balonmano</p>
-  <p>Ante cualquier consulta o mejora de la plataforma arbitral contacte con: <a href="mailto:adminarbitrosplaya@gmail.com" class="highlight-red">adminarbitrosplaya@gmail.com</a></p>
-</footer>
 
 <script src="js/auth.js"></script>
 </body>
