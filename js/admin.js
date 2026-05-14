@@ -55,7 +55,6 @@ function showAdminSection(id) {
 async function handleUploadReg() {
   const title = document.getElementById('regTitle').value;
   const desc = document.getElementById('regDesc').value;
-  const year = document.getElementById('regYear').value;
   const icon = document.getElementById('regIcon').value;
   const fileInput = document.getElementById('regFile');
   const file = fileInput.files[0];
@@ -67,12 +66,11 @@ async function handleUploadReg() {
   btn.textContent = '⏳ Subiendo...';
 
   try {
-    await DataService.uploadReglamento(file, { titulo: title, descripcion: desc, fecha: year, icono: icon });
+    await DataService.uploadReglamento(file, { titulo: title, descripcion: desc, icono: icon });
     alert('Reglamento subido con éxito.');
     // Limpiar campos
     document.getElementById('regTitle').value = '';
     document.getElementById('regDesc').value = '';
-    document.getElementById('regYear').value = '';
     document.getElementById('regIcon').value = '';
     fileInput.value = '';
     loadReglamentosList();
@@ -98,7 +96,6 @@ async function loadReglamentosList() {
           <div style="font-weight:700">${r.icono || '📋'} ${r.titulo}</div>
           <div style="font-size:0.75rem;color:#9E9E9E">${r.descripcion || ''}</div>
         </td>
-        <td>${r.fecha || '-'}</td>
         <td>
           <button class="btn btn-secondary btn-sm" style="background:#FDECEA;color:#D32F2F;border-color:#FFCDD2" 
             onclick="handleDeleteReg('${r.id}')">🗑️ Eliminar</button>

@@ -119,7 +119,7 @@ const DataService = {
   // ==========================================
   async getReglamentos() {
     checkConnection();
-    const { data, error } = await supabaseClient.from('reglamentos').select('*').order('fecha', { ascending: false });
+    const { data, error } = await supabaseClient.from('reglamentos').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     return data.map(r => ({
       ...r,
@@ -144,10 +144,8 @@ const DataService = {
       delete dbMetadata.storagePath;
     }
 
-    // Si la fecha viene vacía o no existe, enviar null para evitar error en Supabase
-    if (!dbMetadata.fecha || (typeof dbMetadata.fecha === 'string' && dbMetadata.fecha.trim() === '')) {
-      dbMetadata.fecha = null;
-    }
+    // Eliminar cualquier referencia a fecha para que no intente insertarse
+    delete dbMetadata.fecha;
 
     const fileName = `${Date.now()}_${file.name}`;
     const { data: uploadData, error: uploadError } = await supabaseClient.storage

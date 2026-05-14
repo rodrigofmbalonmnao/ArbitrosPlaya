@@ -33,7 +33,6 @@
           <div>
             <div class="pdf-card-title">${r.titulo}</div>
             <div class="pdf-card-desc">${r.descripcion}</div>
-            <div class="pdf-card-meta">Edición ${r.fecha}</div>
           </div>
         </div>
         <div class="pdf-actions">
