@@ -49,6 +49,7 @@ function showAdminSection(id) {
 
   if (id === 'users') loadUsersList();
   if (id === 'reglamentos') loadReglamentosList();
+  if (id === 'banco_videos') loadBancoVideosAdmin();
 }
 
 // ---- Gestión de Reglamentos ----
@@ -532,5 +533,178 @@ async function handleDeleteQuestion(id) {
     loadQuestionEditor(currentEditingType);
   } catch (err) {
     alert('Error al borrar: ' + err.message);
+  }
+}
+
+// ==========================================
+// GESTION BANCO DE VIDEOS (NUEVO)
+// ==========================================
+let currentAdminCats = [];
+let currentAdminVids = [];
+
+async function loadBancoVideosAdmin() {
+  await loadCatsList();
+  await loadVidsList();
+}
+
+async function loadCatsList() {
+  try {
+    currentAdminCats = await DataService.getCategoriasVideos();
+    const tbody = document.getElementById('catsListBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    currentAdminCats.forEach(c => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><div style="font-weight:700">${c.icono || ''} ${c.nombre}</div></td>
+        <td>
+          <button class="btn btn-secondary btn-sm" onclick="openCatModal('${c.id}')">✏️ Editar</button>
+          <button class="btn btn-secondary btn-sm" style="color:#D32F2F" onclick="handleDeleteCat('${c.id}')">🗑️ Eliminar</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    const selectCat = document.getElementById('vidCat');
+    if (selectCat) {
+      selectCat.innerHTML = '';
+      currentAdminCats.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = `${c.icono || ''} ${c.nombre}`;
+        selectCat.appendChild(opt);
+      });
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function loadVidsList() {
+  try {
+    currentAdminVids = await DataService.getVideosDelBanco();
+    const tbody = document.getElementById('vidsListBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    currentAdminVids.forEach(v => {
+      const catName = v.categorias_videos ? v.categorias_videos.nombre : 'Sin categoría';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><div style="font-weight:700">${v.titulo}</div></td>
+        <td>${catName}</td>
+        <td>
+          <button class="btn btn-secondary btn-sm" onclick="openVidModal('${v.id}')">✏️ Editar</button>
+          <button class="btn btn-secondary btn-sm" style="color:#D32F2F" onclick="handleDeleteVid('${v.id}')">🗑️ Eliminar</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function openCatModal(id = null) {
+  document.getElementById('catId').value = id || '';
+  if (id) {
+    const c = currentAdminCats.find(x => x.id.toString() === id.toString());
+    document.getElementById('catName').value = c ? c.nombre : '';
+    document.getElementById('catIcon').value = c ? c.icono : '';
+  } else {
+    document.getElementById('catName').value = '';
+    document.getElementById('catIcon').value = '';
+  }
+  document.getElementById('modalCat').classList.add('active');
+}
+
+function closeCatModal() {
+  document.getElementById('modalCat').classList.remove('active');
+}
+
+async function handleSaveCat() {
+  const id = document.getElementById('catId').value;
+  const nombre = document.getElementById('catName').value;
+  const icono = document.getElementById('catIcon').value;
+  if (!nombre) return alert('El nombre es obligatorio');
+  try {
+    const btn = document.getElementById('btnSaveCat');
+    btn.disabled = true; btn.textContent = 'Guardando...';
+    await DataService.saveCategoriaVideo({ id: id ? id : undefined, nombre, icono });
+    closeCatModal();
+    loadBancoVideosAdmin();
+  } catch(e) {
+    alert('Error: ' + e.message);
+  } finally {
+    document.getElementById('btnSaveCat').disabled = false;
+    document.getElementById('btnSaveCat').textContent = 'Guardar';
+  }
+}
+
+async function handleDeleteCat(id) {
+  if (!confirm('Borrar categoría borrará los vídeos que contenga si la BD lo restringe o los dejará huérfanos. ¿Continuar?')) return;
+  try {
+    await DataService.deleteCategoriaVideo(id);
+    loadBancoVideosAdmin();
+  } catch(e) {
+    alert('Error: ' + e.message);
+  }
+}
+
+function openVidModal(id = null) {
+  document.getElementById('vidId').value = id || '';
+  const fileContainer = document.getElementById('vidFileContainer');
+  if (id) {
+    const v = currentAdminVids.find(x => x.id.toString() === id.toString());
+    document.getElementById('vidTitle').value = v ? v.titulo : '';
+    document.getElementById('vidCat').value = v ? v.categoria_id : '';
+    fileContainer.style.display = 'none'; // No se edita el archivo
+  } else {
+    document.getElementById('vidTitle').value = '';
+    document.getElementById('vidFile').value = '';
+    fileContainer.style.display = 'block';
+  }
+  document.getElementById('modalVid').classList.add('active');
+}
+
+function closeVidModal() {
+  document.getElementById('modalVid').classList.remove('active');
+}
+
+async function handleSaveVid() {
+  const id = document.getElementById('vidId').value;
+  const titulo = document.getElementById('vidTitle').value;
+  const cat = document.getElementById('vidCat').value;
+  
+  if (!titulo || !cat) return alert('Título y Categoría son obligatorios');
+  const btn = document.getElementById('btnSaveVid');
+  btn.disabled = true; btn.textContent = 'Guardando...';
+
+  try {
+    if (id) {
+      await DataService.updateVideoBanco(id, { titulo, categoria_id: cat });
+    } else {
+      const file = document.getElementById('vidFile').files[0];
+      if (!file) {
+        btn.disabled = false; btn.textContent = 'Guardar';
+        return alert('Debe seleccionar un archivo');
+      }
+      await DataService.uploadVideoBanco(file, { titulo, categoria_id: cat });
+    }
+    closeVidModal();
+    loadVidsList();
+  } catch(e) {
+    alert('Error: ' + e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Guardar';
+  }
+}
+
+async function handleDeleteVid(id) {
+  if(!confirm('¿Borrar vídeo?')) return;
+  try {
+    await DataService.deleteVideoBanco(id);
+    loadVidsList();
+  } catch(e) {
+    alert('Error: ' + e.message);
   }
 }

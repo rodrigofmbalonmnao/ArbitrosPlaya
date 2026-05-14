@@ -10,42 +10,53 @@
   }
 })();
 
-function initBanco() {
+async function initBanco() {
   const container = document.getElementById('categoriesList');
   if (!container) return;
-  container.innerHTML = '';
+  container.innerHTML = '<div style="text-align:center; padding: 20px;">Cargando vídeos...</div>';
   
-  BANCO_VIDEOS.forEach((cat, ci) => {
-    const item = document.createElement('div');
-    item.className = 'category-item';
-    item.innerHTML = `
-      <div class="category-header" onclick="toggleCategory(this)">
-        <div class="category-title-wrapper">
-          <span class="category-icon">${cat.icono}</span>
-          <span>${cat.categoria}</span>
-          <span class="category-count">${cat.videos.length}</span>
-        </div>
-        <span class="category-arrow">▼</span>
-      </div>
-      <div class="category-videos" id="cat-${ci}"></div>
-    `;
-    container.appendChild(item);
+  try {
+    const cats = await DataService.getCategoriasVideos();
+    const vids = await DataService.getVideosDelBanco();
     
-    const videosDiv = item.querySelector(`#cat-${ci}`);
-    cat.videos.forEach(v => {
-      const vItem = document.createElement('div');
-      vItem.className = 'video-list-item';
-      vItem.onclick = () => openModal(v.titulo, v.url);
-      vItem.innerHTML = `
-        <div class="video-thumb"></div>
-        <div class="video-info">
-          <div class="video-title">${v.titulo}</div>
-          <div class="video-meta">${v.descripcion}</div>
+    container.innerHTML = '';
+    
+    cats.forEach((cat, ci) => {
+      const catVids = vids.filter(v => v.categoria_id === cat.id);
+      
+      const item = document.createElement('div');
+      item.className = 'category-item';
+      item.innerHTML = `
+        <div class="category-header" onclick="toggleCategory(this)">
+          <div class="category-title-wrapper">
+            <span class="category-icon">${cat.icono || '📁'}</span>
+            <span>${cat.nombre}</span>
+            <span class="category-count">${catVids.length}</span>
+          </div>
+          <span class="category-arrow">▼</span>
         </div>
+        <div class="category-videos" id="cat-${ci}"></div>
       `;
-      videosDiv.appendChild(vItem);
+      container.appendChild(item);
+      
+      const videosDiv = item.querySelector(`#cat-${ci}`);
+      catVids.forEach(v => {
+        const vItem = document.createElement('div');
+        vItem.className = 'video-list-item';
+        vItem.onclick = () => openModal(v.titulo, v.video_url);
+        vItem.innerHTML = `
+          <div class="video-thumb"></div>
+          <div class="video-info">
+            <div class="video-title">${v.titulo}</div>
+          </div>
+        `;
+        videosDiv.appendChild(vItem);
+      });
     });
-  });
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = '<div style="text-align:center; padding: 20px; color: red;">Error al cargar vídeos del banco.</div>';
+  }
 }
 
 function toggleCategory(header) {
@@ -81,11 +92,11 @@ function updateToggleButton() {
 function openModal(title, url) {
   document.getElementById('modalTitle').textContent = title;
   document.getElementById('modalPlayer').innerHTML = `
-    <video controls autoplay style="width: 100%; max-height: 70vh; background: #000; border-radius: 8px; margin-bottom: 15px;">
+    <video controls autoplay style="width: 100%; height: auto; min-height: 200px; max-height: 70vh; background: #000; border-radius: 8px; margin-bottom: 20px; display: block;">
       <source src="${url}" type="video/mp4">
       Tu navegador no soporta la reproducción de vídeos.
     </video>
-    <div style="text-align: center;">
+    <div style="text-align: center; margin-top: 10px;">
       <a href="${url}" download class="btn-primary" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 24px; text-decoration: none; border-radius: 6px; background-color: #C8102E; color: white; font-weight: 600; font-size: 0.95rem; gap: 8px;">
         ⬇️ Descargar
       </a>

@@ -40,6 +40,7 @@
     <button class="admin-tab" onclick="showAdminSection('users')">👥 Usuarios</button>
     <button class="admin-tab" onclick="showAdminSection('content')">📝 Editar Contenido</button>
     <button class="admin-tab" onclick="showAdminSection('reglamentos')">📚 Reglamentos</button>
+    <button class="admin-tab" onclick="showAdminSection('banco_videos')">🎬 Banco de Vídeos</button>
   </div>
 
   <!-- SECCIÓN 1: ESTADÍSTICAS -->
@@ -197,6 +198,107 @@
     </div>
   </div>
 
+  <!-- SECCIÓN 5: BANCO DE VÍDEOS -->
+  <div id="section-banco_videos" class="admin-section">
+    <div class="admin-header">
+      <h1>Gestión del Banco de Vídeos</h1>
+      <p>Organiza las categorías y sube vídeos desde aquí.</p>
+    </div>
+
+    <!-- Categorías -->
+    <div class="admin-card" style="margin-bottom:24px; padding:20px; background:white; border-radius:12px; border:1px solid #E0E0E0">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="margin-bottom:0">Categorías</h3>
+        <button class="btn btn-primary btn-sm" onclick="openCatModal()">➕ Añadir Categoría</button>
+      </div>
+      <div class="users-table-container">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Icono y Nombre</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="catsListBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Vídeos -->
+    <div class="admin-card" style="padding:20px; background:white; border-radius:12px; border:1px solid #E0E0E0">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="margin-bottom:0">Vídeos Subidos</h3>
+        <button class="btn btn-primary btn-sm" onclick="openVidModal()">➕ Sube un Vídeo</button>
+      </div>
+      <div class="users-table-container">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Categoría</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="vidsListBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal Categoría -->
+<div id="modalCat" class="admin-modal">
+  <div class="admin-modal-content" style="max-width: 400px;">
+    <div class="admin-modal-header">
+      <h2 id="modalCatTitle">Añadir Categoría</h2>
+      <button class="close-modal" onclick="closeCatModal()">✕</button>
+    </div>
+    <div class="admin-modal-body">
+      <input type="hidden" id="catId">
+      <div style="margin-bottom: 12px;">
+        <label style="display:block; font-weight:700; margin-bottom:4px">Nombre:</label>
+        <input type="text" id="catName" class="select-field" style="width:100%">
+      </div>
+      <div style="margin-bottom: 20px;">
+        <label style="display:block; font-weight:700; margin-bottom:4px">Icono (Emoji):</label>
+        <input type="text" id="catIcon" class="select-field" style="width:100%">
+      </div>
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeCatModal()">Cancelar</button>
+        <button class="btn btn-primary" id="btnSaveCat" onclick="handleSaveCat()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Vídeo -->
+<div id="modalVid" class="admin-modal">
+  <div class="admin-modal-content" style="max-width: 500px;">
+    <div class="admin-modal-header">
+      <h2 id="modalVidTitle">Subir Vídeo</h2>
+      <button class="close-modal" onclick="closeVidModal()">✕</button>
+    </div>
+    <div class="admin-modal-body">
+      <input type="hidden" id="vidId">
+      <div style="margin-bottom: 12px;">
+        <label style="display:block; font-weight:700; margin-bottom:4px">Título:</label>
+        <input type="text" id="vidTitle" class="select-field" style="width:100%">
+      </div>
+      <div style="margin-bottom: 12px;">
+        <label style="display:block; font-weight:700; margin-bottom:4px">Categoría:</label>
+        <select id="vidCat" class="select-field" style="width:100%"></select>
+      </div>
+      <div id="vidFileContainer" style="margin-bottom: 20px;">
+        <label style="display:block; font-weight:700; margin-bottom:4px">Archivo de Vídeo (MP4, etc):</label>
+        <input type="file" id="vidFile" accept="video/mp4,video/webm,video/ogg,video/quicktime" class="select-field" style="width:100%">
+      </div>
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="closeVidModal()">Cancelar</button>
+        <button class="btn btn-primary" id="btnSaveVid" onclick="handleSaveVid()">Guardar</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Modal Detalle Usuario -->

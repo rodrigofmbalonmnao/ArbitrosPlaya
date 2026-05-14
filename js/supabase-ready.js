@@ -352,6 +352,67 @@ const DataService = {
   },
 
   // ==========================================
+  // GESTION DEL BANCO DE VIDEOS (NUEVO)
+  // ==========================================
+  async getCategoriasVideos() {
+    checkConnection();
+    const { data, error } = await supabaseClient.from('categorias_videos').select('*').order('created_at', { ascending: true });
+    if (error) throw error;
+    return data;
+  },
+  async saveCategoriaVideo(cat) {
+    checkConnection();
+    if (cat.id) {
+      const { error } = await supabaseClient.from('categorias_videos').update(cat).eq('id', cat.id);
+      if (error) throw error;
+    } else {
+      const { error } = await supabaseClient.from('categorias_videos').insert([cat]);
+      if (error) throw error;
+    }
+  },
+  async deleteCategoriaVideo(id) {
+    checkConnection();
+    const { error } = await supabaseClient.from('categorias_videos').delete().eq('id', id);
+    if (error) throw error;
+  },
+
+  async getVideosDelBanco() {
+    checkConnection();
+    const { data, error } = await supabaseClient.from('banco_videos').select('*, categorias_videos(nombre, icono)').order('created_at', { ascending: false });
+    if (error) throw error;
+    return data;
+  },
+  async uploadVideoBanco(file, metadata) {
+    checkConnection();
+    const fileName = `banco_videos/${Date.now()}_${file.name}`;
+    const { error: uploadError } = await supabaseClient.storage.from('banco_recursos').upload(fileName, file);
+    if (uploadError) throw uploadError;
+
+    const { data: { publicUrl } } = supabaseClient.storage.from('banco_recursos').getPublicUrl(fileName);
+
+    const { error: dbError } = await supabaseClient.from('banco_videos').insert([{
+      ...metadata,
+      video_url: publicUrl,
+      storage_path: fileName
+    }]);
+    if (dbError) throw dbError;
+  },
+  async updateVideoBanco(id, metadata) {
+    checkConnection();
+    const { error } = await supabaseClient.from('banco_videos').update(metadata).eq('id', id);
+    if (error) throw error;
+  },
+  async deleteVideoBanco(id) {
+    checkConnection();
+    const { data } = await supabaseClient.from('banco_videos').select('storage_path').eq('id', id).single();
+    if (data && data.storage_path) {
+      await supabaseClient.storage.from('banco_recursos').remove([data.storage_path]);
+    }
+    const { error } = await supabaseClient.from('banco_videos').delete().eq('id', id);
+    if (error) throw error;
+  },
+
+  // ==========================================
   // UTILIDADES
   // ==========================================
   formatDate(iso) { 
