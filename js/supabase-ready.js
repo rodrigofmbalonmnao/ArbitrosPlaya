@@ -144,6 +144,11 @@ const DataService = {
       delete dbMetadata.storagePath;
     }
 
+    // Si la fecha viene vacía o no existe, enviar null para evitar error en Supabase
+    if (!dbMetadata.fecha || (typeof dbMetadata.fecha === 'string' && dbMetadata.fecha.trim() === '')) {
+      dbMetadata.fecha = null;
+    }
+
     const fileName = `${Date.now()}_${file.name}`;
     const { data: uploadData, error: uploadError } = await supabaseClient.storage
       .from('reglamentos')
