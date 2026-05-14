@@ -219,10 +219,12 @@ function repeatSameTest() {
 
 // ---- Show solutions ----
 async function showSolutions(revealAll = false) {
-  if (revealAll && currentResultId) {
-    await DataService.markSawSolutions(currentResultId);
+  if (revealAll) {
     const btnRepeat = document.getElementById('btnRepeatSame');
     if (btnRepeat) btnRepeat.style.display = 'none';
+    if (currentResultId) {
+      await DataService.markSawSolutions(currentResultId);
+    }
   }
   
   const container = document.getElementById('reviewList');

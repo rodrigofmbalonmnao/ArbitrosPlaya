@@ -195,10 +195,12 @@ function repeatSameVideoTest() {
 }
 
 async function showVideoSolutions(revealAll = false) {
-  if (revealAll && currentResultId) {
-    await DataService.markSawSolutions(currentResultId);
+  if (revealAll) {
     const btnR = document.getElementById('btnRepeatSameVideo');
     if (btnR) btnR.style.display = 'none';
+    if (currentResultId) {
+      await DataService.markSawSolutions(currentResultId);
+    }
   }
   
   const c = document.getElementById('reviewList'); c.innerHTML = '';
