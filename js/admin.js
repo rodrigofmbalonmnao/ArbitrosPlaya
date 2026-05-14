@@ -23,7 +23,7 @@ const ALL_FEDERATIONS = [
   "Federación de Balonmano de Melilla",
   "Federación de Balonmano de la Región de Murcia",
   "Federación Navarra de Balonmano",
-  "Federación Vasca de Balonmano (EHF)",
+  "Federación Vasca de Balonmano",
   "Federación Riojana de Balonmano",
   "Federación Valenciana de Balonmano",
   "Otra..."
