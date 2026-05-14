@@ -185,14 +185,22 @@ const DataService = {
   async saveTestResult(result) {
     checkConnection();
     const user = await this.getCurrentUser();
-    const { data, error } = await supabaseClient.from('test_results').insert([{ user_id: user.id, ...result }]).select();
+    
+    const dbResult = { ...result };
+    if (dbResult.maxScore !== undefined) { dbResult.max_score = dbResult.maxScore; delete dbResult.maxScore; }
+    if (dbResult.testType !== undefined) { dbResult.test_type = dbResult.testType; delete dbResult.testType; }
+    if (dbResult.testNombre !== undefined) { dbResult.test_nombre = dbResult.testNombre; delete dbResult.testNombre; }
+    if (dbResult.timeSeconds !== undefined) { dbResult.time_seconds = dbResult.timeSeconds; delete dbResult.timeSeconds; }
+    if (dbResult.sawSolutions !== undefined) { dbResult.saw_solutions = dbResult.sawSolutions; delete dbResult.sawSolutions; }
+
+    const { data, error } = await supabaseClient.from('test_results').insert([{ user_id: user.id, ...dbResult }]).select();
     if (error) throw error;
     return data[0].id;
   },
 
   async markSawSolutions(resultId) {
     checkConnection();
-    await supabaseClient.from('test_results').update({ sawSolutions: true }).eq('id', resultId);
+    await supabaseClient.from('test_results').update({ saw_solutions: true }).eq('id', resultId);
   },
 
   async getUserResults(userId, filters = {}) {
