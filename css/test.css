@@ -144,7 +144,7 @@
 .results-meta-label { font-size: 0.8rem; opacity: 0.75; }
 
 .results-summary {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;
 }
 .result-summary-card {
   background: white; border-radius: 14px; padding: 20px; text-align: center;
