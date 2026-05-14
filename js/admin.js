@@ -115,7 +115,7 @@ async function loadReglamentosList() {
 
 function openEditReg(id) {
   if (!window.currentRegs) return;
-  const reg = window.currentRegs.find(r => r.id === id);
+  const reg = window.currentRegs.find(r => r.id.toString() === id.toString());
   if (!reg) return;
 
   document.getElementById('editRegId').value = reg.id;
