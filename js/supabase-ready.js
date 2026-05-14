@@ -366,7 +366,9 @@ const DataService = {
       const { error } = await supabaseClient.from('categorias_videos').update(cat).eq('id', cat.id);
       if (error) throw error;
     } else {
-      const { error } = await supabaseClient.from('categorias_videos').insert([cat]);
+      const catToInsert = { ...cat };
+      delete catToInsert.id;
+      const { error } = await supabaseClient.from('categorias_videos').insert([catToInsert]);
       if (error) throw error;
     }
   },
