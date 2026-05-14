@@ -85,6 +85,7 @@ async function handleUploadReg() {
 async function loadReglamentosList() {
   try {
     const regs = await DataService.getReglamentos();
+    window.currentRegs = regs; // Guardar para edición
     const tbody = document.getElementById('reglamentosListBody');
     if (!tbody) return;
     tbody.innerHTML = '';
@@ -97,14 +98,60 @@ async function loadReglamentosList() {
           <div style="font-size:0.75rem;color:#9E9E9E">${r.descripcion || ''}</div>
         </td>
         <td>
-          <button class="btn btn-secondary btn-sm" style="background:#FDECEA;color:#D32F2F;border-color:#FFCDD2" 
-            onclick="handleDeleteReg('${r.id}')">🗑️ Eliminar</button>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-secondary btn-sm" 
+              onclick="openEditReg('${r.id}')">✏️ Editar</button>
+            <button class="btn btn-secondary btn-sm" style="background:#FDECEA;color:#D32F2F;border-color:#FFCDD2" 
+              onclick="handleDeleteReg('${r.id}')">🗑️ Eliminar</button>
+          </div>
         </td>
       `;
       tbody.appendChild(tr);
     });
   } catch (err) {
     console.error('Error cargando lista de reglamentos:', err);
+  }
+}
+
+function openEditReg(id) {
+  if (!window.currentRegs) return;
+  const reg = window.currentRegs.find(r => r.id === id);
+  if (!reg) return;
+
+  document.getElementById('editRegId').value = reg.id;
+  document.getElementById('editRegTitle').value = reg.titulo || '';
+  document.getElementById('editRegDesc').value = reg.descripcion || '';
+  document.getElementById('editRegIcon').value = reg.icono || '';
+
+  document.getElementById('modalReglamentoEditor').classList.add('active');
+}
+
+function closeEditReg() {
+  document.getElementById('modalReglamentoEditor').classList.remove('active');
+}
+
+async function handleSaveRegEdit() {
+  const id = document.getElementById('editRegId').value;
+  const title = document.getElementById('editRegTitle').value;
+  const desc = document.getElementById('editRegDesc').value;
+  const icon = document.getElementById('editRegIcon').value;
+
+  if (!title) return alert('El título es obligatorio.');
+
+  const btn = document.getElementById('btnSaveRegEdit');
+  btn.disabled = true;
+  btn.textContent = '⏳ Guardando...';
+
+  try {
+    await DataService.updateReglamento(id, { titulo: title, descripcion: desc, icono: icon });
+    alert('Reglamento actualizado con éxito.');
+    closeEditReg();
+    loadReglamentosList();
+  } catch (err) {
+    alert('Error al actualizar reglamento: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '💾 Guardar cambios';
   }
 }
 

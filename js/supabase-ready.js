@@ -173,6 +173,12 @@ const DataService = {
     if (error) throw error;
   },
 
+  async updateReglamento(id, metadata) {
+    checkConnection();
+    const { error } = await supabaseClient.from('reglamentos').update(metadata).eq('id', id);
+    if (error) throw error;
+  },
+
   // ==========================================
   // RESULTADOS
   // ==========================================

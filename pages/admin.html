@@ -260,6 +260,35 @@
   </div>
 </div>
 
+<!-- Modal Editor de Reglamentos -->
+<div id="modalReglamentoEditor" class="admin-modal">
+  <div class="admin-modal-content" style="max-width: 500px;">
+    <div class="admin-modal-header">
+      <h2>Editar Reglamento</h2>
+      <button class="close-modal" onclick="closeEditReg()">✕</button>
+    </div>
+    <div class="admin-modal-body">
+      <input type="hidden" id="editRegId">
+      <div style="margin-bottom: 12px;">
+        <label style="display:block; font-weight:700; margin-bottom:4px">Título:</label>
+        <input type="text" id="editRegTitle" class="select-field" style="width:100%">
+      </div>
+      <div style="margin-bottom: 12px;">
+        <label style="display:block; font-weight:700; margin-bottom:4px">Descripción:</label>
+        <input type="text" id="editRegDesc" class="select-field" style="width:100%">
+      </div>
+      <div style="margin-bottom: 20px;">
+        <label style="display:block; font-weight:700; margin-bottom:4px">Icono:</label>
+        <input type="text" id="editRegIcon" class="select-field" style="width:100%">
+      </div>
+      <div style="display: flex; gap: 12px; justify-content: flex-end; border-top: 1px solid #EEE; padding-top: 20px;">
+        <button class="btn btn-secondary" onclick="closeEditReg()">Cancelar</button>
+        <button class="btn btn-primary" id="btnSaveRegEdit" onclick="handleSaveRegEdit()">💾 Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer class="main-footer">
   <p>Plataforma de Formación Arbitral · Balonmano Playa creada por <span class="highlight-red">Rodrigo Jiménez Abades</span> · Árbitro Territorial Federación Madrileña de Balonmano</p>
   <p>Ante cualquier consulta o mejora de la plataforma arbitral contacte con: <a href="mailto:adminarbitrosplaya@gmail.com" class="highlight-red">adminarbitrosplaya@gmail.com</a></p>
