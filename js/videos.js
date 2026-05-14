@@ -80,7 +80,17 @@ function updateToggleButton() {
 
 function openModal(title, url) {
   document.getElementById('modalTitle').textContent = title;
-  document.getElementById('modalPlayer').innerHTML = `<iframe src="${url}" allowfullscreen></iframe>`;
+  document.getElementById('modalPlayer').innerHTML = `
+    <video controls autoplay style="width: 100%; max-height: 70vh; background: #000; border-radius: 8px; margin-bottom: 15px;">
+      <source src="${url}" type="video/mp4">
+      Tu navegador no soporta la reproducción de vídeos.
+    </video>
+    <div style="text-align: center;">
+      <a href="${url}" download class="btn-primary" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 24px; text-decoration: none; border-radius: 6px; background-color: #C8102E; color: white; font-weight: 600; font-size: 0.95rem; gap: 8px;">
+        ⬇️ Descargar
+      </a>
+    </div>
+  `;
   document.getElementById('videoModal').classList.add('active');
 }
 
