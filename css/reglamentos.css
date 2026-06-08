@@ -16,13 +16,14 @@
 .pdf-card:hover { border-color: #C8102E; box-shadow: 0 8px 28px rgba(200,16,46,0.15); transform: translateY(-4px); }
 
 .pdf-card-top { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
+.pdf-card-top > div:last-child { min-width: 0; }
 .pdf-icon {
   width: 52px; height: 52px; background: linear-gradient(135deg, #C8102E, #A00D24);
   border-radius: 12px; display: flex; align-items: center; justify-content: center;
   font-size: 1.6rem; flex-shrink: 0; color: white;
 }
 .pdf-card-title { font-size: 1rem; font-weight: 700; color: #1A1A1A; line-height: 1.3; }
-.pdf-card-desc { font-size: 0.82rem; color: #9E9E9E; margin-top: 4px; line-height: 1.5; }
+.pdf-card-desc { font-size: 0.82rem; color: #9E9E9E; margin-top: 4px; line-height: 1.5; overflow-wrap: break-word; word-break: break-word; }
 .pdf-card-meta { font-size: 0.78rem; color: #BDBDBD; margin-top: 8px; }
 
 .pdf-actions { display: flex; gap: 10px; margin-top: auto; padding-top: 16px; }
